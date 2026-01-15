@@ -1,6 +1,7 @@
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2026.1.1"
+    id "com.peterabeles.gversion" version "1.10"
 }
 
 java {
@@ -42,6 +43,16 @@ deploy {
 }
 
 def deployArtifact = deploy.targets.roborio.artifacts.frcJava
+
+project.compileJava.dependsOn(createVersionFile)
+gversion {
+  srcDir       = "src/main/java/"
+  classPackage = "frc.robot"
+  className    = "BuildConstants"
+  dateFormat   = "MMM-dd-yyyy HH:mm:ss XXX"
+  timeZone     = "America/Los_Angeles" // Use preferred time zone
+  indent       = "  "
+}
 
 // Set to true to use debug for all targets including JNI, which will drastically impact
 // performance.
