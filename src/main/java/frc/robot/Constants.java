@@ -4,8 +4,12 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.config.ModuleConfig;
+import com.pathplanner.lib.config.RobotConfig;
+import frc.robot.Constants.DriveConstants.ModuleLocations;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.math.system.plant.DCMotor;
 
 /**
@@ -21,6 +25,46 @@ import edu.wpi.first.math.system.plant.DCMotor;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+public static final class RobotConfigInfo {
+
+    public static final ModuleConfig moduleConfig = new ModuleConfig(
+        DriveConstants.WHEEL_DIAMETER,
+        2.75,
+        0.7,
+        DCMotor.getNEO(1),
+        DriveConstants.DRIVE_REDUCTION,
+        DriveConstants.currentLimit,
+        1);
+
+    public static final RobotConfig robotConfig = new RobotConfig(
+        66.68, 3.682,
+        moduleConfig,
+        ModuleLocations.frontLeft,
+        ModuleLocations.frontRight,
+        ModuleLocations.backLeft,
+        ModuleLocations.backRight);
+  }
+
+
+  //evil code that checks what mode the robot is running on
+  //probably will rewrite later
+  public static final Mode simMode = Mode.SIM;
+  public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+
+  public static enum Mode {
+    /** Running on a real robot. */
+    REAL,
+
+    /** Running a physics simulator. */
+    SIM,
+
+    /** Replaying from a log file. */
+    REPLAY
+  }
+
+
+
   public static final class DriveConstants {
     public static final double deadband = 0.08;
     public static final int currentLimit = 40;
@@ -52,10 +96,6 @@ public final class Constants {
     }
   }
 
-  public static final class RobotConfigInfo {
 
-  
-
-  }
 
 }
