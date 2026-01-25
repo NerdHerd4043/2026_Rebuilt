@@ -5,8 +5,6 @@
 package frc.robot.subsystems.drivebase;
 
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
@@ -19,6 +17,7 @@ import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.studica.frc.AHRS;
 
+import cowlib.SwerveModule;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -37,19 +36,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.DriveConstants;
+import frc.robot.DriveConstants;
 import frc.robot.Constants.RobotConfigInfo;
-import frc.robot.AutoConstants.PathPlannerConstants.RotationPID;
-import frc.robot.AutoConstants.PathPlannerConstants.TranslationPID;
-import cowlib.SwerveModule;
 import frc.robot.DriveConstants.ModuleLocations;
 import frc.robot.DriveConstants.SwerveModules;
-import org.littletonrobotics.junction.Logger;
-
+import frc.robot.AutoConstants.PathPlannerConstants.RotationPID;
+import frc.robot.AutoConstants.PathPlannerConstants.TranslationPID;
 
 public class Drivebase extends SubsystemBase {
-  static final Lock odometryLock = new ReentrantLock();
-
   private final double DRIVE_REDUCTION = 1.0 / 6.75;
   private final double NEO_FREE_SPEED = 5820.0 / 60.0;
   private final double WHEEL_DIAMETER = 0.1016;
@@ -65,6 +59,7 @@ public class Drivebase extends SubsystemBase {
   private SwerveModule backLeft = new SwerveModule(SwerveModules.backLeft, MAX_VELOCITY, MAX_VOLTAGE);
   private SwerveModule backRight = new SwerveModule(SwerveModules.backRight, MAX_VELOCITY, MAX_VOLTAGE);
 
+  private SwerveModule[] modules = new SwerveModule[] { frontLeft, frontRight, backLeft, backRight };
 
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
       ModuleLocations.frontLeft,
@@ -83,21 +78,9 @@ public class Drivebase extends SubsystemBase {
 
   private SendableChooser<Double> driveSpeedChooser = new SendableChooser<>();
   private SendableChooser<Boolean> fieldOriented = new SendableChooser<>();
-  private final Module[] modules = new Module[4]; // FL, FR, BL, BR
-
 
   /** Creates a new Drivebase. */
-  public Drivebase(
-      GyroIO gyroIO,
-      ModuleIO flModuleIO,
-      ModuleIO frModuleIO,
-      ModuleIO blModuleIO,
-      ModuleIO brModuleIO) {
-
-    modules[0] = new Module(flModuleIO, 0);
-    modules[1] = new Module(frModuleIO, 1);
-    modules[2] = new Module(blModuleIO, 2);
-    modules[3] = new Module(brModuleIO, 3);
+  public Drivebase() {
     var inst = NetworkTableInstance.getDefault();
     var table = inst.getTable("SmartDashboard");
     this.fieldOrientedEntry = table.getBooleanTopic("Field Oriented").getEntry(true);
@@ -116,7 +99,6 @@ public class Drivebase extends SubsystemBase {
     SmartDashboard.putData(this.driveSpeedChooser);
     SmartDashboard.putData(this.fieldOriented);
 
-    
     RobotConfig config;
     try {
       config = RobotConfig.fromGUISettings();
@@ -153,29 +135,6 @@ public class Drivebase extends SubsystemBase {
     return -gyro.getYaw();
   }
 
-
-public void runVelocity(ChassisSpeeds speeds) {
-    // Calculate module setpoints
-    ChassisSpeeds discreteSpeeds = ChassisSpeeds.discretize(speeds, 0.02);
-    SwerveModuleState[] setpointStates = kinematics.toSwerveModuleStates(discreteSpeeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(setpointStates, MAX_VELOCITY);
-
-    // Log unoptimized setpoints
-    Logger.recordOutput("SwerveStates/Setpoints", setpointStates);
-    Logger.recordOutput("SwerveChassisSpeeds/Setpoints", discreteSpeeds);
-
-    // Send setpoints to modules
-    for (int i = 0; i < 4; i++) {
-      modules[i].runSetpoint(setpointStates[i]);
-    }
-
-    // Log optimized setpoints (runSetpoint mutates each state)
-    Logger.recordOutput("SwerveStates/SetpointsOptimized", setpointStates);
-  }
-
-
-
-
   public void fieldOrientedDrive(double speedX, double speedY, double rot) {
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speedX, speedY, rot,
         Rotation2d.fromDegrees(getFieldAngle()));
@@ -191,31 +150,6 @@ public void runVelocity(ChassisSpeeds speeds) {
     defaultDrive(speedX, speedY, rot, true);
   }
 
-  /** Runs the drive in a straight line with the specified drive output. */
-  public void runCharacterization(double output) {
-    for (int i = 0; i < 4; i++) {
-      modules[i].runCharacterization(output);
-    }
-  }
-  /** Returns the average velocity of the modules in rad/sec. */
-  public double getFFCharacterizationVelocity() {
-    double output = 0.0;
-    for (int i = 0; i < 4; i++) {
-      output += modules[i].getFFCharacterizationVelocity() / 4.0;
-    }
-    return output;
-  }
-
-  /** Returns the position of each module in radians. */
-  public double[] getWheelRadiusCharacterizationPositions() {
-    double[] values = new double[4];
-    for (int i = 0; i < 4; i++) {
-      values[i] = modules[i].getWheelRadiusCharacterizationPosition();
-    }
-    return values;
-  }
-
-
   public void defaultDrive(double speedX, double speedY, double rot, boolean slew) {
     if (slew) {
       speedX = slewRateX.calculate(speedX);
@@ -227,11 +161,6 @@ public void runVelocity(ChassisSpeeds speeds) {
     } else {
       robotOrientedDrive(speedX, speedY, rot);
     }
-  }
-
-  /** Returns the current odometry rotation. */
-  public Rotation2d getRotation() {
-    return getPose().getRotation();
   }
 
   public void drive(ChassisSpeeds speeds) {
@@ -255,17 +184,6 @@ public void runVelocity(ChassisSpeeds speeds) {
   public double getMaxAngleVelocity() {
     return MAX_ANGULAR_VELOCITY;
   }
-
-  /** Returns the maximum linear speed in meters per sec. */
-  public double getMaxLinearSpeedMetersPerSec() {
-    return MAX_VELOCITY;
-  }
-
-  /** Returns the maximum angular speed in radians per sec. */
-  public double getMaxAngularSpeedRadPerSec() {
-    return MAX_ANGULAR_VELOCITY;
-  }
-
 
   public Pose2d getPose() {
     return odometry.getPoseMeters();

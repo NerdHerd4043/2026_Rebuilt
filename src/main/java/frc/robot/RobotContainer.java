@@ -1,125 +1,199 @@
-// Copyright (c) 2021-2026 Littleton Robotics
-// http://github.com/Mechanical-Advantage
-//
-// Use of this source code is governed by a BSD
-// license that can be found in the LICENSE file
-// at the root directory of this project.
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
 
+
+import frc.robot.commands.Drive;
+
+import frc.robot.subsystems.drivebase.Drivebase;
+
+
+import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.auto.AutoBuilder;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.GenericHID;
+// import com.pathplanner.lib.auto.NamedCommands;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
+
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.DriveCommands;
-import frc.robot.subsystems.drivebase.Drivebase;
-import frc.robot.subsystems.drivebase.GyroIO;
-import frc.robot.subsystems.drivebase.GyroIOPigeon2;
-import frc.robot.subsystems.drivebase.ModuleIO;
-import frc.robot.subsystems.drivebase.ModuleIOSim;
-import frc.robot.subsystems.drivebase.ModuleIOSpark;
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
+ * subsystems, commands, and trigger mappings) should be declared here.
  */
+@Logged
 public class RobotContainer {
-  // Subsystems
-  private final Drivebase drivebase;
+  // The robot's subsystems and commands are defined here...
+  private final AHRS gyro = new AHRS(NavXComType.kMXP_SPI);
+  private final DigitalInput beamBreak = new DigitalInput(0);
 
-  // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+  private final Drivebase drivebase = new Drivebase();
 
-  //Dashboard inputs;
-  private final LoggedDashboardChooser<Command> autoChooser;
-  //TODO: Make autoChoose actually work!!!
+  // private final Climber climber = new Climber();
+  // private final CANdleSystem candle = new CANdleSystem();
 
+  private static XboxController driveStick = new XboxController(0);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  // private static CommandXboxController c_driveStick2 = new
+  // CommandXboxController(1);
+  private static CommandXboxController c_driveStick = new CommandXboxController(0);
+
+  private SendableChooser<Command> autoChooser;
+
+  private double mapped = 0;
+
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
-    switch (Constants.currentMode) {
-      case REAL:
-        // Real robot, instantiate hardware IO implementations
-        drivebase =
-            new Drivebase(
-                new GyroIOPigeon2(),
-                new ModuleIOSpark(0),
-                new ModuleIOSpark(1),
-                new ModuleIOSpark(2),
-                new ModuleIOSpark(3));
-        break;
+    SignalLogger.enableAutoLogging(false);
 
-      case SIM:
-        // Sim robot, instantiate physics sim IO implementations
-        drivebase =
-            new Drivebase(
-                new GyroIO() {},
-                new ModuleIOSim(),
-                new ModuleIOSim(),
-                new ModuleIOSim(),
-                new ModuleIOSim());
-        break;
+    configureNamedCommands();
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Mode", autoChooser);
 
-      default:
-        // Replayed robot, disable IO implementations
-        drivebase =
-            new Drivebase(
-                new GyroIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {});
-        break;
-    }
-
-    // Set up auto routines
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
-
-    // Set up SysId routines
-    autoChooser.addOption(
-        "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drivebase));
+    // Configure the trigger bindings
+    drivebase.setDefaultCommand(
+        new Drive(drivebase,
+            () -> getScaledXY(),
+            () -> scaleRotationAxis(driveStick.getRightX())));
 
 
-//TODO: Make autochooser functional!! 
+    // candle.setDefaultCommand(
+    // candle.getDefaultCommand(
+    // shooter::isReady,
+    // this::hasNote));
 
-    // Configure the button bindings
-    configureButtonBindings();
+    configureBindings();
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * TODO: Investigate which has an applyDeadband function
+   *
+   * {@link edu.wpi.first.math.MathUtil}
    */
-  private void configureButtonBindings() {
-    // Default command, normal field-relative drive
-    drivebase.setDefaultCommand(
-        DriveCommands.joystickDrive(
-            drivebase,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
-
-
-    // Reset gyro to 0° when B button is pressed
-    controller
-        .b()
-        .onTrue(
-            Commands.runOnce(
-                    () ->
-                        drivebase.resetPose(
-                            new Pose2d(drivebase.getPose().getTranslation(), Rotation2d.kZero)),
-                    drivebase)
-                .ignoringDisable(true));
+  private double deadband(double input, double deadband) {
+    if (Math.abs(input) < deadband) {
+      return 0;
+    } else {
+      return input;
+    }
   }
+
+  private double getArmControl(double trigger) {
+
+
+    return mapped;
+  }
+
+  private double[] getXY() {
+    double[] xy = new double[2];
+    xy[0] = deadband(driveStick.getLeftX(), DriveConstants.deadband);
+    xy[1] = deadband(driveStick.getLeftY(), DriveConstants.deadband);
+    return xy;
+  }
+
+  private double[] getScaledXY() {
+    double[] xy = getXY();
+
+    // Convert to Polar coordinates
+    double r = Math.sqrt(xy[0] * xy[0] + xy[1] * xy[1]);
+    double theta = Math.atan2(xy[1], xy[0]);
+
+    // Square radius and scale by max velocity
+    r = r * r * drivebase.getMaxVelocity();
+
+    // Convert to Cartesian coordinates
+    xy[0] = r * Math.cos(theta);
+    xy[1] = r * Math.sin(theta);
+
+    return xy;
+  }
+
+  private double squared(double input) {
+    return Math.copySign(input * input, input);
+  }
+
+  @SuppressWarnings("unused")
+  private double cube(double input) {
+    return Math.copySign(input * input * input, input);
+  }
+
+  @SuppressWarnings("unused")
+  private double scaleTranslationAxis(double input) {
+    return deadband(-squared(input), DriveConstants.deadband) * drivebase.getMaxVelocity();
+  }
+
+  private double scaleRotationAxis(double input) {
+    return deadband(squared(input), DriveConstants.deadband) * drivebase.getMaxAngleVelocity() * -0.6;
+  }
+
+  public void resetGyro() {
+    gyro.reset();
+  }
+
+  public double getGyroYaw() {
+    return gyro.getYaw();
+  }
+
+  public boolean onBlueAlliance() {
+    var alliance = DriverStation.getAlliance();
+    if (alliance.isPresent()) {
+      return alliance.get() == Alliance.Blue;
+    }
+    return false;
+  }
+
+  public boolean hasNote() {
+    return !beamBreak.get();
+  }
+
+  public boolean getBeamBreak() {
+    return !beamBreak.get();
+  }
+
+  /**
+   * Use this method to define your trigger->command mappings. Triggers can be
+   * created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+   * an arbitrary
+   * predicate, or via the named factories in {@link
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+   * {@link
+   * CommandXboxController
+   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or
+   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * joysticks}.
+   */
+  private void configureBindings() {
+
+  }
+
+  private void configureNamedCommands() {
+
+  }
+
+  // public void ledsOff() {
+  // candle.ledsOff();
+  // }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -127,6 +201,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.get();
+    //return drivebase.getAlignCommand();
+    return autoChooser.getSelected();
   }
 }
