@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.intake.Intake.ExpansionPositions;
-import frc.robot.subsystems.shooter.*;
 
 @Logged
 public class Robot extends TimedRobot {
@@ -102,7 +101,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_robotContainer.intake.expansionPosition = ExpansionPositions.REST;
+    m_robotContainer.setExpansionPositionToRest();
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
@@ -123,7 +123,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    m_robotContainer.shooter.stopFlywheel().schedule();
+    m_robotContainer.stopFlywheel().schedule();
   }
 
   @Override

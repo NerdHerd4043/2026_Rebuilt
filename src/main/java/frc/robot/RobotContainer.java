@@ -46,8 +46,8 @@ public class RobotContainer {
   private final DigitalInput beamBreak = new DigitalInput(0);
 
   private final Drivebase drivebase = new Drivebase();
-  public final Shooter shooter = new Shooter();
-  public final Intake intake = new Intake();
+  private final Shooter shooter = new Shooter();
+  private final Intake intake = new Intake();
 
   // private final CANdleSystem candle = new CANdleSystem();
 
@@ -147,6 +147,14 @@ public class RobotContainer {
 
   private double scaleRotationAxis(double input) {
     return deadband(squared(input), DriveConstants.deadband) * drivebase.getMaxAngleVelocity() * -0.6;
+  }
+
+  public Command stopFlywheel() {
+    return shooter.stopFlywheel();
+  }
+
+  public void setExpansionPositionToRest() {
+    intake.setExpansionPositionToRest();
   }
 
   public void resetGyro() {

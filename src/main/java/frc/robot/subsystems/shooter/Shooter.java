@@ -84,24 +84,29 @@ public class Shooter extends SubsystemBase {
 
   // shoots 8 balls
   public Command shootOneBall() {
-
     Command runFlywheel = this.flywheelSlow();
     Command waitCommand = Commands.waitSeconds(1.5);
-    Command runShooter = feedBalls();
+    Command runShooter = feedBalls(-ShooterConstants.disrupterSpeed);
     return Commands.sequence(
         runFlywheel,
         waitCommand,
         runShooter);
   }
 
-  // public Command ShootAndFeed() {
-  // return Commands.parallel(Shoot, Feed);
-  // }
-
   public Command feedBalls() {
     return this.runEnd(() -> {
       indexerMotor.set(ShooterConstants.indexerFeedSpeed);
       disrupterMotor.set(ShooterConstants.disrupterSpeed);
+    }, () -> {
+      indexerMotor.stopMotor();
+      disrupterMotor.stopMotor();
+    });
+  }
+
+  public Command feedBalls(double speed) {
+    return this.runEnd(() -> {
+      indexerMotor.set(ShooterConstants.indexerFeedSpeed);
+      disrupterMotor.set(speed);
     }, () -> {
       indexerMotor.stopMotor();
       disrupterMotor.stopMotor();

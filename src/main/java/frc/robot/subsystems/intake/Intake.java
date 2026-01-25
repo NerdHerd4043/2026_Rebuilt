@@ -26,7 +26,7 @@ public class Intake extends SubsystemBase {
     REST, EXTENDED
   };
 
-  public ExpansionPositions expansionPosition = ExpansionPositions.REST;
+  private ExpansionPositions expansionPosition = ExpansionPositions.REST;
 
   // init CANcoder for expansion motor
   private CANcoder expansionCoder = new CANcoder(IntakeConstants.expansionEncoderID);
@@ -44,6 +44,10 @@ public class Intake extends SubsystemBase {
     intakeMotor.configure(intakeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     expansionMotor.configure(expansionMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+  }
+
+  public void setExpansionPositionToRest() {
+    expansionPosition = ExpansionPositions.REST;
   }
 
   public void intake() {
