@@ -36,6 +36,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.AutoConstants;
 import frc.robot.DriveConstants;
 import frc.robot.Constants.RobotConfigInfo;
 import frc.robot.DriveConstants.ModuleLocations;
@@ -225,10 +226,10 @@ public class Drivebase extends SubsystemBase {
         new Pose2d(0, -2, Rotation2d.fromDegrees(0)));
 
     PathConstraints constraints = new PathConstraints(
-        2.750, // Max Velocity
-        2.183, // Max Acceleration
-        360, // Max Angular Velocity
-        360 // Max Angular Acceleration
+        AutoConstants.PathPlannerConstants.Constraints.maxVelocity, // Max Velocity
+        AutoConstants.PathPlannerConstants.Constraints.maxAcceleration, // Max Acceleration
+        AutoConstants.PathPlannerConstants.Constraints.maxAngularVelocity, // Max Angular Velocity
+        AutoConstants.PathPlannerConstants.Constraints.maxAngularAcceleration // Max Angular Acceleration
     );
 
     PathPlannerPath path = new PathPlannerPath(waypoints, constraints, null,

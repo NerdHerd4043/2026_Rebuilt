@@ -56,6 +56,14 @@ public final class AutoConstants {
       public static final double i = 0;
       public static final double d = 0;
     }
+    public static final class Constraints {
+      
+      public static final double maxVelocity = 2.750;
+      public static final double maxAcceleration = 2.183;
+      public static final double maxAngularVelocity = 360;
+      public static final double maxAngularAcceleration = 360;
+
+    }
   }
 
 

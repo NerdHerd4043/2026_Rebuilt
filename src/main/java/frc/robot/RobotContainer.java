@@ -57,8 +57,6 @@ public class RobotContainer {
 
   private SendableChooser<Command> autoChooser;
 
-  private double mapped = 0;
-
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -97,11 +95,6 @@ public class RobotContainer {
     }
   }
 
-  private double getArmControl(double trigger) {
-
-
-    return mapped;
-  }
 
   private double[] getXY() {
     double[] xy = new double[2];

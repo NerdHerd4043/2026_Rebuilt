@@ -15,8 +15,8 @@ public class DriveConstants {
   public static final Rotation2d backLeftZeroRotation = new Rotation2d(0.0);
   public static final Rotation2d backRightZeroRotation = new Rotation2d(0.0);
 
-    public static final int pigeonCanId = 9;
 
+    
 //other IDS
   public static final int frontLeftDriveCanId = 1;
   public static final int backLeftDriveCanId = 3;
@@ -28,7 +28,6 @@ public class DriveConstants {
   public static final int frontRightTurnCanId = 6;
   public static final int backRightTurnCanId = 8;
 
-    public static final double odometryFrequency = 100.0; // Hz
     public static final double deadband = 0.08;
     public static final int currentLimit = 40;
     public static final double slewRate = 20; // lower number for higher center of mass
@@ -38,6 +37,7 @@ public class DriveConstants {
     public static final double WHEEL_DIAMETER = 0.1016;
     public static final double MAX_VELOCITY = NEO_FREE_SPEED * DRIVE_REDUCTION * WHEEL_DIAMETER * Math.PI;
     public static final double MAX_ANGULAR_VELOCITY = MAX_VELOCITY / (ModuleLocations.dist / Math.sqrt(2.0));
+
 
     public static final class SwervePID {
       public static final double p = 0.12;
