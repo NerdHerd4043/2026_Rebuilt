@@ -17,7 +17,6 @@ import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.studica.frc.AHRS;
 
-import cowlib.SwerveModule;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;

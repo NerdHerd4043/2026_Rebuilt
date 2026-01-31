@@ -2,8 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import cowlib.SwerveModuleConfig;
 import edu.wpi.first.math.util.Units;
+import frc.robot.subsystems.drivebase.SwerveModuleConfig;
 
 public class DriveConstants {
 
