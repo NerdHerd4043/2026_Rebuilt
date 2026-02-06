@@ -8,7 +8,7 @@ package frc.robot;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.drivebase.DriveConstants;
 import frc.robot.subsystems.drivebase.Drivebase;
-
+import frc.robot.subsystems.drivebase.Shooter;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -45,6 +45,7 @@ public class RobotContainer {
   private final DigitalInput beamBreak = new DigitalInput(0);
 
   private final Drivebase drivebase = new Drivebase();
+  private final Shooter shooter = new Shooter();
 
   // private final Climber climber = new Climber();
   // private final CANdleSystem candle = new CANdleSystem();
@@ -177,6 +178,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    c_driveStick.leftBumper().whileTrue(Commands.runOnce(shooter.spinUpFlyWheal(), shooter));
 
   }
 
