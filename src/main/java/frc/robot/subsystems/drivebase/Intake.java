@@ -2,30 +2,33 @@ package frc.robot.subsystems.drivebase;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.drivebase.Constants.IntakeConstants;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 public class Intake extends SubsystemBase {
-    private SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeMotorID, MotorType.kBrushless);
-    private SparkMax expantionMotor = new SparkMax(IntakeConstants.expantionMotorID, MotorType.kBrushless);
+    private SparkFlex intakeMotor = new SparkFlex(IntakeConstants.intakeMotorID, MotorType.kBrushless);
+    private SparkFlex expansionMotor = new SparkFlex(IntakeConstants.expansionMotorID, MotorType.kBrushless);
 
     public Intake() {
-        final SparkMaxConfig intakeMotorConfig = new SparkMaxConfig();
-        final SparkMaxConfig expantionMotorConfig = new SparkMaxConfig();
+        final SparkFlexConfig intakeMotorConfig = new SparkFlexConfig();
+        final SparkFlexConfig expansionMotorConfig = new SparkFlexConfig();
 
         intakeMotorConfig.idleMode(IdleMode.kBrake);
-        expantionMotorConfig.idleMode(IdleMode.kBrake);
+        expansionMotorConfig.idleMode(IdleMode.kBrake);
 
         intakeMotorConfig.inverted(false);
-        expantionMotorConfig.inverted(false);
+        expansionMotorConfig.inverted(false);
 
         intakeMotor.configure(intakeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        expantionMotor.configure(expantionMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        expansionMotor.configure(expansionMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     }
 
@@ -41,7 +44,7 @@ public class Intake extends SubsystemBase {
 
     }
 
-    public void retraked() {
+    public void contract() {
         
     }
 
