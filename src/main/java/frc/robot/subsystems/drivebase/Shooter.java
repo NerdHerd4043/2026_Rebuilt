@@ -14,10 +14,10 @@ public class Shooter extends SubsystemBase {
     private SparkMax flyWhealMotor = new SparkMax(ShooterConstants.flyWhealMotorID, MotorType.kBrushless);
     private SparkMax indexerMotor = new SparkMax(ShooterConstants.indexerMotorID, MotorType.kBrushless);
 
+    private final SparkMaxConfig flyWhealMotorConfig = new SparkMaxConfig();
+    private final SparkMaxConfig indexerMotorConfig = new SparkMaxConfig();
+
     public Shooter() {
-        final SparkMaxConfig flyWhealMotorConfig = new SparkMaxConfig();
-        final SparkMaxConfig indexerMotorConfig = new SparkMaxConfig();
-        
         flyWhealMotorConfig.idleMode(IdleMode.kCoast);
         indexerMotorConfig.idleMode(IdleMode.kBrake);
 
@@ -33,15 +33,22 @@ public class Shooter extends SubsystemBase {
     }
 
     public void slowFlyWheal() {
-        flyWhealMotor.set(0.0);
-    }
-
-    public void stopFlyWheal() {
         flyWhealMotor.stopMotor();
     }
 
-    public Command feedBalls(double speed) {
+    //there is proble a beter way to do this but i dont know how -Michael
+    public void emergencyStop() {
+        flyWhealMotorConfig.idleMode(IdleMode.kBrake);
+        flyWhealMotor.configure(flyWhealMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        flyWhealMotor.stopMotor();
+
+        flyWhealMotorConfig.idleMode(IdleMode.kCoast);
+        flyWhealMotor.configure(flyWhealMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    }
+
+    public Command feedBalls() {
         
-        return this.run(()-> indexerMotor.set(speed)).finallyDo(()-> indexerMotor.stopMotor());
+        return this.run(()-> indexerMotor.set(ShooterConstants.feedSpeed)).finallyDo(()-> indexerMotor.stopMotor());
     }
 }

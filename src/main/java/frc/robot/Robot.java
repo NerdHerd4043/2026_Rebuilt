@@ -63,7 +63,8 @@ public class Robot extends LoggedRobot {
     }
 
     // Initialize URCL
-    Logger.registerURCL(URCL.startExternal());
+    //Logger.registerURCL(URCL.startExternal()); //its erorring and failing to simulate -Michael
+
     StatusLogger.disableAutoLogging(); // Disable REVLib's built-in logging
 
     // Start AdvantageKit logger
