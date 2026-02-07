@@ -179,8 +179,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    c_driveStick.leftBumper().whileTrue(Commands.run(shooter::spinUpFlyWheal, shooter));
-    c_driveStick.leftBumper().whileFalse(Commands.run(shooter::slowFlyWheal, shooter));
+    c_driveStick.leftBumper().whileTrue(Commands.run(shooter::spinUpflyWheel, shooter));
+    c_driveStick.leftBumper().whileFalse(Commands.run(shooter::slowflyWheel, shooter));
     c_driveStick.povDown().onTrue(Commands.runOnce(shooter::emergencyStop, shooter));
 
     c_driveStick.a().whileTrue(Commands.run(shooter::feedBalls, shooter));

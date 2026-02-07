@@ -10,11 +10,21 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.drivebase.Constants.ShooterConstants;
-
+import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class Shooter extends SubsystemBase {
+
+    
+    //subscribers and variables code block
+    private final DoubleSubscriber maxSpeedSub;
+    private double flyWheelMaxSpeed = ShooterConstants.flyWheelMaxSpeed; // Default max speed    
+
+
     private SparkFlex flyWheelMotor = new SparkFlex(ShooterConstants.flyWheelMotorID, MotorType.kBrushless);
     private SparkFlex indexerMotor = new SparkFlex(ShooterConstants.indexerMotorID, MotorType.kBrushless);
 
@@ -22,6 +32,21 @@ public class Shooter extends SubsystemBase {
     private final SparkFlexConfig indexerMotorConfig = new SparkFlexConfig();
 
     public Shooter() {
+
+        //initiate shuffleboard tab
+        ShuffleboardTab configTab = Shuffleboard.getTab("ShooterConfiguration");
+
+        configTab.add("flyWheelMaxSpeed", ShooterConstants.flyWheelMaxSpeed)
+         .withWidget(BuiltInWidgets.kTextView) // Or kNumberSlider
+         .getEntry(); 
+
+        //networktables slop
+        var inst = NetworkTableInstance.getDefault();
+
+        // Subscribes to /datatable/MaxSpeed
+        maxSpeedSub = inst.getDoubleTopic("/Shuffleboard/ShooterConfiguration/flyWheelMaxSpeed").subscribe(ShooterConstants.flyWheelMaxSpeed);
+
+        //configs
         flyWheelMotorConfig.idleMode(IdleMode.kCoast);
         indexerMotorConfig.idleMode(IdleMode.kBrake);
 
@@ -30,6 +55,17 @@ public class Shooter extends SubsystemBase {
 
         flyWheelMotor.configure(flyWheelMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         indexerMotor.configure(indexerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    }
+
+
+
+    public void periodic(){
+
+        //update flywheel speed
+        flyWheelMaxSpeed = maxSpeedSub.get();
+
+
+
     }
 
     public void spinUpflyWheel() {
@@ -53,6 +89,6 @@ public class Shooter extends SubsystemBase {
 
     public Command feedBalls() {
         
-        return this.run(()-> indexerMotor.set(ShooterConstants.feedSpeed)).finallyDo(()-> indexerMotor.stopMotor());
+        return this.run(()-> indexerMotor.set(ShooterConstants.indexerFeedSpeed)).finallyDo(()-> indexerMotor.stopMotor());
     }
 }
