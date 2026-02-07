@@ -22,8 +22,8 @@ public class Shooter extends SubsystemBase {
         flyWhealMotorConfig.idleMode(IdleMode.kCoast);
         indexerMotorConfig.idleMode(IdleMode.kBrake);
 
-        flyWhealMotorConfig.inverted(false);
-        indexerMotorConfig.inverted(false);
+        flyWhealMotorConfig.inverted(true);
+        indexerMotorConfig.inverted(true);
 
         flyWhealMotor.configure(flyWhealMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         indexerMotor.configure(indexerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

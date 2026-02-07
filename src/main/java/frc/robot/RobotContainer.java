@@ -7,6 +7,7 @@ package frc.robot;
 
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.drivebase.Drivebase;
+import frc.robot.subsystems.drivebase.Intake;
 import frc.robot.subsystems.drivebase.Shooter;
 import frc.robot.subsystems.drivebase.Constants.DriveConstants;
 
@@ -25,7 +26,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -46,6 +46,7 @@ public class RobotContainer {
 
   private final Drivebase drivebase = new Drivebase();
   private final Shooter shooter = new Shooter();
+  private final Intake intake = new Intake();
 
   // private final Climber climber = new Climber();
   // private final CANdleSystem candle = new CANdleSystem();
@@ -183,6 +184,9 @@ public class RobotContainer {
     c_driveStick.povDown().onTrue(Commands.runOnce(shooter::emergencyStop, shooter));
 
     c_driveStick.a().whileTrue(Commands.run(shooter::feedBalls, shooter));
+
+    c_driveStick.b().whileTrue(Commands.run(intake::intake, intake));
+
 
   }
 
