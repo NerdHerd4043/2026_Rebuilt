@@ -6,9 +6,9 @@ package frc.robot;
 
 
 import frc.robot.commands.Drive;
-import frc.robot.subsystems.drivebase.DriveConstants;
 import frc.robot.subsystems.drivebase.Drivebase;
 import frc.robot.subsystems.drivebase.Shooter;
+import frc.robot.subsystems.drivebase.Constants.DriveConstants;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.auto.AutoBuilder;

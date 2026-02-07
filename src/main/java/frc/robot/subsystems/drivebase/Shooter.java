@@ -9,6 +9,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.drivebase.Constants.ShooterConstants;
 
 public class Shooter extends SubsystemBase {
     private SparkMax flyWhealMotor = new SparkMax(ShooterConstants.flyWhealMotorID, MotorType.kBrushless);
