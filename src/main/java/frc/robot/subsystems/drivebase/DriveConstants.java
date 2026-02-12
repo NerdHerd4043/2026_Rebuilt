@@ -14,15 +14,16 @@ public class DriveConstants {
   public static final Rotation2d backRightZeroRotation = new Rotation2d(0.0);
 
   // other IDS
-  public static final int frontLeftDriveCanId = 1;
+  // NOTE: Not currently being used, check the SwerveModules subclass
+  public static final int frontRightDriveCanId = 1;
+  public static final int frontLeftDriveCanId = 2;
   public static final int backLeftDriveCanId = 3;
-  public static final int frontRightDriveCanId = 5;
-  public static final int backRightDriveCanId = 7;
+  public static final int backRightDriveCanId = 4;
 
-  public static final int frontLeftTurnCanId = 2;
-  public static final int backLeftTurnCanId = 4;
-  public static final int frontRightTurnCanId = 6;
-  public static final int backRightTurnCanId = 8;
+  public static final int frontRightTurnCanId = 11;
+  public static final int frontLeftTurnCanId = 12;
+  public static final int backLeftTurnCanId = 13;
+  public static final int backRightTurnCanId = 14;
 
   public static final double deadband = 0.08;
   public static final int currentLimit = 40;
