@@ -5,7 +5,9 @@
 # 1. Motor Controllers
 
 
-# 2. Drivebase subsytems
+# Subsystems
+- [ ] Drivebase
+- [ ] Shooter
 
 
 # 3. Auto Control

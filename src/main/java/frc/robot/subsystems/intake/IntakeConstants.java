@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drivebase.Constants;
+package frc.robot.subsystems.intake;
 
 public class IntakeConstants {
 

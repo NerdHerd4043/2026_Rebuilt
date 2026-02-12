@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drivebase.Constants;
+package frc.robot.subsystems.shooter;
 
 public class ShooterConstants {
     public static final int flyWheelMotorID = 31;

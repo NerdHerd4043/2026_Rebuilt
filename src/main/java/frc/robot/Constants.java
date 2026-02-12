@@ -7,7 +7,7 @@ package frc.robot;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.subsystems.drivebase.Constants.DriveConstants;
+import frc.robot.subsystems.drivebase.DriveConstants;
 import edu.wpi.first.math.system.plant.DCMotor;
 
 /**
@@ -24,7 +24,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
  */
 public final class Constants {
 
-public static final class RobotConfigInfo {
+  public static final class RobotConfigInfo {
 
     public static final ModuleConfig moduleConfig = new ModuleConfig(
         DriveConstants.WHEEL_DIAMETER,
@@ -44,9 +44,8 @@ public static final class RobotConfigInfo {
         DriveConstants.ModuleLocations.backRight);
   }
 
-
-  //evil code that checks what mode the robot is running on
-  //probably will rewrite later
+  // evil code that checks what mode the robot is running on
+  // probably will rewrite later
   public static final Mode simMode = Mode.SIM;
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
 
@@ -60,10 +59,5 @@ public static final class RobotConfigInfo {
     /** Replaying from a log file. */
     REPLAY
   }
-
-
-
-
-
 
 }

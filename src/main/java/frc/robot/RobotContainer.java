@@ -4,12 +4,11 @@
 
 package frc.robot;
 
-
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.drivebase.Drivebase;
-import frc.robot.subsystems.drivebase.Intake;
-import frc.robot.subsystems.drivebase.Shooter;
-import frc.robot.subsystems.drivebase.Constants.DriveConstants;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.drivebase.DriveConstants;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -75,7 +74,6 @@ public class RobotContainer {
             () -> getScaledXY(),
             () -> scaleRotationAxis(driveStick.getRightX())));
 
-
     // candle.setDefaultCommand(
     // candle.getDefaultCommand(
     // shooter::isReady,
@@ -96,7 +94,6 @@ public class RobotContainer {
       return input;
     }
   }
-
 
   private double[] getXY() {
     double[] xy = new double[2];
@@ -187,7 +184,6 @@ public class RobotContainer {
 
     c_driveStick.b().whileTrue(Commands.run(intake::intake, intake));
 
-
   }
 
   private void configureNamedCommands() {
@@ -204,7 +200,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    //return drivebase.getAlignCommand();
+    // return drivebase.getAlignCommand();
     return autoChooser.getSelected();
   }
 }
