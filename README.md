@@ -3,6 +3,12 @@
 
 
 ## CAN IDs
+
+- [ ] Verify that designs match software expectations
+
+
+Logical Robot
+
 ### Drivebase
 Drive motors (spark max) 1-4
 Angle motors (spark max) 11-14
@@ -22,6 +28,7 @@ Intake (spark max) 42
 - [ ] Auto - Cade
 - [ ] Shooter - Michael
   - [ ] Flywheel - WIP
+    - PID loops stuff (talk about on thursday)
   - [ ] Kickup - not started
 - [ ] Intake - Michael
   - [ ] Hopper - not started
@@ -29,3 +36,5 @@ Intake (spark max) 42
 
 
 ## Auto Control
+
+IDK Cade or something
