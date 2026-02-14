@@ -13,18 +13,6 @@ public class DriveConstants {
   public static final Rotation2d backLeftZeroRotation = new Rotation2d(0.0);
   public static final Rotation2d backRightZeroRotation = new Rotation2d(0.0);
 
-  // other IDS
-  // NOTE: Not currently being used, check the SwerveModules subclass
-  public static final int frontRightDriveCanId = 6;
-  public static final int frontLeftDriveCanId = 7;
-  public static final int backLeftDriveCanId = 1;
-  public static final int backRightDriveCanId = 3;
-
-  public static final int frontRightTurnCanId = 5;
-  public static final int frontLeftTurnCanId = 8;
-  public static final int backLeftTurnCanId = 2;
-  public static final int backRightTurnCanId = 4;
-
   public static final double deadband = 0.08;
   public static final int currentLimit = 40;
   public static final double slewRate = 20; // lower number for higher center of mass
