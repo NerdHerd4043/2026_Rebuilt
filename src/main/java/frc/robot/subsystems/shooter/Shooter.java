@@ -62,6 +62,11 @@ public class Shooter extends SubsystemBase {
     flyWheelMotorConfig.closedLoop.p(ShooterConstants.FlyWheelPID.p);
     flyWheelMotorConfig.closedLoop.i(ShooterConstants.FlyWheelPID.i);
     flyWheelMotorConfig.closedLoop.d(ShooterConstants.FlyWheelPID.d);
+    flyWheelMotorConfig.closedLoop.maxOutput(ShooterConstants.FlyWheelPID.maxOutput);
+    flyWheelMotorConfig.closedLoop.minOutput(ShooterConstants.FlyWheelPID.minOutput);
+
+    flyWheelMotorConfig.closedLoop.feedForward.kS(ShooterConstants.FlyWheelFF.s);
+    flyWheelMotorConfig.closedLoop.feedForward.kV(ShooterConstants.FlyWheelFF.v);
 
     flyWheelMotor.configure(flyWheelMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     indexerMotor.configure(indexerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
