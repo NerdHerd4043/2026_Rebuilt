@@ -47,7 +47,6 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter();
   private final Intake intake = new Intake();
 
-  // private final Climber climber = new Climber();
   // private final CANdleSystem candle = new CANdleSystem();
 
   private static XboxController driveStick = new XboxController(0);
@@ -74,19 +73,9 @@ public class RobotContainer {
             () -> getScaledXY(),
             () -> scaleRotationAxis(driveStick.getRightX())));
 
-    // candle.setDefaultCommand(
-    // candle.getDefaultCommand(
-    // shooter::isReady,
-    // this::hasNote));
-
     configureBindings();
   }
 
-  /**
-   * TODO: Investigate which has an applyDeadband function
-   *
-   * {@link edu.wpi.first.math.MathUtil}
-   */
   private double deadband(double input, double deadband) {
     if (Math.abs(input) < deadband) {
       return 0;

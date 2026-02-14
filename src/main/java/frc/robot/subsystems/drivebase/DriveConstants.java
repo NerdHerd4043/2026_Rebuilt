@@ -15,15 +15,15 @@ public class DriveConstants {
 
   // other IDS
   // NOTE: Not currently being used, check the SwerveModules subclass
-  public static final int frontRightDriveCanId = 1;
-  public static final int frontLeftDriveCanId = 2;
-  public static final int backLeftDriveCanId = 3;
-  public static final int backRightDriveCanId = 4;
+  public static final int frontRightDriveCanId = 6;
+  public static final int frontLeftDriveCanId = 7;
+  public static final int backLeftDriveCanId = 1;
+  public static final int backRightDriveCanId = 3;
 
-  public static final int frontRightTurnCanId = 11;
-  public static final int frontLeftTurnCanId = 12;
-  public static final int backLeftTurnCanId = 13;
-  public static final int backRightTurnCanId = 14;
+  public static final int frontRightTurnCanId = 5;
+  public static final int frontLeftTurnCanId = 8;
+  public static final int backLeftTurnCanId = 2;
+  public static final int backRightTurnCanId = 4;
 
   public static final double deadband = 0.08;
   public static final int currentLimit = 40;
