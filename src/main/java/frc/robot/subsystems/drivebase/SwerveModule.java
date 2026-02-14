@@ -7,8 +7,8 @@ package frc.robot.subsystems.drivebase;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -80,8 +80,8 @@ public class SwerveModule {
   }
 
   public void drive(SwerveModuleState state) {
-    SwerveModuleState optimized = SwerveModuleState.optimize(state, new Rotation2d(getEncoderRadians()));
-    this.drive(optimized.speedMetersPerSecond, optimized.angle.getDegrees());
+    state.optimize(new Rotation2d(getEncoderRadians()));
+    this.drive(state.speedMetersPerSecond, state.angle.getDegrees());
   }
 
   public double getEncoder() {
