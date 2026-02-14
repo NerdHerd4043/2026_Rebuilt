@@ -17,6 +17,7 @@ import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.studica.frc.AHRS;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -41,6 +42,7 @@ import frc.robot.subsystems.drivebase.DriveConstants.*;
 import frc.robot.AutoConstants.PathPlannerConstants.RotationPID;
 import frc.robot.AutoConstants.PathPlannerConstants.TranslationPID;
 
+@Logged
 public class Drivebase extends SubsystemBase {
   private final double DRIVE_REDUCTION = 1.0 / 6.75;
   private final double NEO_FREE_SPEED = 5820.0 / 60.0;
