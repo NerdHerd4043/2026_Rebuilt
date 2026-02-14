@@ -85,7 +85,7 @@ public class Shooter extends SubsystemBase {
 
   public void spinUpFlyWheel() {
     stop = false;
-      pidController.setSetpoint(0, ControlType.kVelocity);
+      pidController.setSetpoint(ShooterConstants.setPoint, ControlType.kVelocity);
 
   }
 
