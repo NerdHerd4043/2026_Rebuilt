@@ -2,16 +2,17 @@ package frc.robot.subsystems.shooter;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkRelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.shooter.ShooterConstants;
 import edu.wpi.first.networktables.DoubleSubscriber;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -28,6 +29,11 @@ public class Shooter extends SubsystemBase {
 
   private final SparkFlexConfig flyWheelMotorConfig = new SparkFlexConfig();
   private final SparkFlexConfig indexerMotorConfig = new SparkFlexConfig();
+
+  private final SparkClosedLoopController pidController;
+  private final SparkRelativeEncoder encoder;
+
+  private boolean stop;
 
   public Shooter() {
 
@@ -52,8 +58,17 @@ public class Shooter extends SubsystemBase {
     flyWheelMotorConfig.inverted(true);
     indexerMotorConfig.inverted(true);
 
+    // set PID coeffecients
+    flyWheelMotorConfig.closedLoop.p(ShooterConstants.FlyWheelPID.p);
+    flyWheelMotorConfig.closedLoop.i(ShooterConstants.FlyWheelPID.i);
+    flyWheelMotorConfig.closedLoop.d(ShooterConstants.FlyWheelPID.d);
+
     flyWheelMotor.configure(flyWheelMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     indexerMotor.configure(indexerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    pidController =  flyWheelMotor.getClosedLoopController();
+    encoder = (SparkRelativeEncoder) flyWheelMotor.getEncoder();
+
   }
 
   public void periodic() {
@@ -63,23 +78,22 @@ public class Shooter extends SubsystemBase {
 
   }
 
-  public void spinUpflyWheel() {
-    flyWheelMotor.set(ShooterConstants.flyWheelMaxSpeed);
+  public void spinUpFlyWheel() {
+    stop = false;
+      pidController.setSetpoint(0, ControlType.kVelocity);
+
   }
 
-  public void slowflyWheel() {
-    flyWheelMotor.stopMotor();
+  public void slowFlyWheel() {
+    if (!stop) {
+      pidController.setSetpoint(0, ControlType.kVoltage);
+    }
   }
 
-  // there is proble a beter way to do this but i dont know how -Michael
-  public void emergencyStop() {
-    flyWheelMotorConfig.idleMode(IdleMode.kBrake);
-    flyWheelMotor.configure(flyWheelMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  public void stopFlyWheel() {
+    stop = true;
+    pidController.setSetpoint(0, ControlType.kVelocity);
 
-    flyWheelMotor.stopMotor();
-
-    flyWheelMotorConfig.idleMode(IdleMode.kCoast);
-    flyWheelMotor.configure(flyWheelMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public Command feedBalls() {
