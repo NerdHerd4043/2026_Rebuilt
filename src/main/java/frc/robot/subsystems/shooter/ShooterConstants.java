@@ -10,9 +10,13 @@ public class ShooterConstants {
         public static final double p = 0;
         public static final double i = 0;
         public static final double d = 0;
-        public static final double Iz = 0;
-        public static final double ff = 0;
-        public static final double maxOutput = 0;
-        public static final double minOutput = 0;
-  }
+
+        public static final double maxOutput = 1;
+        public static final double minOutput = -1;
+    }
+
+    public static final class FlyWheelFF {
+        public static final double s = 0;
+        public static final double v = 0;
+    }
 }
