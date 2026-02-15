@@ -1,6 +1,7 @@
 package frc.robot.subsystems.shooter;
 
 import com.revrobotics.PersistMode;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
@@ -9,6 +10,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.ControlType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -17,6 +19,7 @@ public class Shooter extends SubsystemBase {
   private SparkFlex indexerMotor = new SparkFlex(ShooterConstants.indexerMotorID, MotorType.kBrushless);
 
   private final SparkClosedLoopController pidController;
+  private final RelativeEncoder encoder;
 
   private boolean stoped;
 
@@ -44,7 +47,8 @@ public class Shooter extends SubsystemBase {
     flyWheelMotor.configure(flyWheelMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     indexerMotor.configure(indexerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    pidController =  flyWheelMotor.getClosedLoopController();
+    this.pidController = flyWheelMotor.getClosedLoopController();
+    this.encoder = flyWheelMotor.getEncoder();
   }
 
   public void spinUpFlyWheel() {
@@ -54,21 +58,24 @@ public class Shooter extends SubsystemBase {
 
   public void slowFlyWheel() {
     if (!this.stoped) {
-      pidController.setSetpoint(0, ControlType.kVoltage);
+      this.pidController.setSetpoint(0, ControlType.kVoltage);
     }
   }
 
   public void stopFlyWheel() {
     this.stoped = true;
-    pidController.setSetpoint(0, ControlType.kVelocity);
+    this.pidController.setSetpoint(0, ControlType.kVelocity);
   }
 
   public Command feedBalls() {
-    return this.run(() -> {if (pidController.isAtSetpoint()) { indexerMotor.set(ShooterConstants.indexerFeedSpeed); }})
+    return this.run(() -> {if (this.pidController.isAtSetpoint()) { indexerMotor.set(ShooterConstants.indexerFeedSpeed); }})
       .finallyDo(() -> indexerMotor.stopMotor());
   }
 
   public void periodic() {
-
+    //SmartDashboard stuff
+    SmartDashboard.putNumber("Flywheel speed (rpm)", this.encoder.getVelocity());
+    SmartDashboard.putBoolean("Flywheel is at velocity setpoint", this.pidController.isAtSetpoint());
+    SmartDashboard.putBoolean("Flywheel is stoped", this.stoped);
   }
 }
