@@ -64,8 +64,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public Command feedBalls() {
-    return this.run(() -> indexerMotor.set(ShooterConstants.indexerFeedSpeed))
-        .finallyDo(() -> indexerMotor.stopMotor());
+    return this.run(() -> {if (pidController.isAtSetpoint()) { indexerMotor.set(ShooterConstants.indexerFeedSpeed); }})
+      .finallyDo(() -> indexerMotor.stopMotor());
   }
 
   public void periodic() {
