@@ -2,21 +2,22 @@ package frc.robot.subsystems.intake;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.intake.IntakeConstants;
 import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 
 @Logged
 public class Intake extends SubsystemBase {
   private SparkFlex intakeMotor = new SparkFlex(IntakeConstants.intakeMotorID, MotorType.kBrushless);
   private SparkFlex expansionMotor = new SparkFlex(IntakeConstants.expansionMotorID, MotorType.kBrushless);
+
+  private SparkClosedLoopController pidController;
 
   public Intake() {
     final SparkFlexConfig intakeMotorConfig = new SparkFlexConfig();
@@ -28,8 +29,20 @@ public class Intake extends SubsystemBase {
     intakeMotorConfig.inverted(false);
     expansionMotorConfig.inverted(false);
 
+    // set PID coeffecients
+    expansionMotorConfig.closedLoop.p(IntakeConstants.ExpansionPID.p)
+      .i(IntakeConstants.ExpansionPID.i)
+      .d(IntakeConstants.ExpansionPID.d)
+      .maxOutput(IntakeConstants.ExpansionPID.maxOutput)
+      .minOutput(IntakeConstants.ExpansionPID.minOutput);
+
+    expansionMotorConfig.closedLoop.feedForward.kS(IntakeConstants.ExpansionFF.s)
+      .kV(IntakeConstants.ExpansionFF.v);
+
     intakeMotor.configure(intakeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     expansionMotor.configure(expansionMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    pidController = expansionMotor.getClosedLoopController();
 
   }
 
@@ -41,12 +54,13 @@ public class Intake extends SubsystemBase {
     intakeMotor.stopMotor();
   }
 
+  
   public void expand() {
-
+    pidController.setSetpoint(IntakeConstants.expansionSetPoint, ControlType.kPosition);
   }
 
   public void contract() {
-
+    pidController.setSetpoint(IntakeConstants.startingSetPoint, ControlType.kPosition);
   }
 
 }

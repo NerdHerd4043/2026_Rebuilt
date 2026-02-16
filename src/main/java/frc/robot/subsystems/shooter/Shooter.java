@@ -5,18 +5,21 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.spark.config.SparkFlexConfig;
+import com.revrobotics.spark.config.*;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+@Logged
 public class Shooter extends SubsystemBase {
   private SparkFlex flyWheelMotor = new SparkFlex(ShooterConstants.flyWheelMotorID, MotorType.kBrushless);
-  private SparkFlex indexerMotor = new SparkFlex(ShooterConstants.indexerMotorID, MotorType.kBrushless);
+  private SparkMax indexerMotor = new SparkMax(ShooterConstants.indexerMotorID, MotorType.kBrushless);
 
   private final SparkClosedLoopController pidController;
   private final RelativeEncoder encoder;
@@ -25,7 +28,7 @@ public class Shooter extends SubsystemBase {
 
   public Shooter() {
     final SparkFlexConfig flyWheelMotorConfig = new SparkFlexConfig();
-    final SparkFlexConfig indexerMotorConfig = new SparkFlexConfig();
+    final SparkMaxConfig indexerMotorConfig = new SparkMaxConfig();
 
     // configs
     flyWheelMotorConfig.idleMode(IdleMode.kCoast);
@@ -52,8 +55,9 @@ public class Shooter extends SubsystemBase {
   }
 
   public void spinUpFlyWheel() {
-    this.stoped = false;
-      pidController.setSetpoint(ShooterConstants.setPoint, ControlType.kVelocity);
+    // this.stoped = false;
+    // pidController.setSetpoint(ShooterConstants.setPoint, ControlType.kVelocity);
+    // flyWheelMotor.set(0.2);
   }
 
   public void slowFlyWheel() {
