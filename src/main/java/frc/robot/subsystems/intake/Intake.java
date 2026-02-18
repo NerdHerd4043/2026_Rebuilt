@@ -8,6 +8,9 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.ctre.phoenix6.hardware.CANcoder;
+import edu.wpi.first.math.util.Units;
+
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.epilogue.Logged;
@@ -16,6 +19,11 @@ import edu.wpi.first.epilogue.Logged;
 public class Intake extends SubsystemBase {
   private SparkFlex intakeMotor = new SparkFlex(IntakeConstants.intakeMotorID, MotorType.kBrushless);
   private SparkFlex expansionMotor = new SparkFlex(IntakeConstants.expansionMotorID, MotorType.kBrushless);
+
+  //init CANcoder for expansion motor
+  private CANcoder expansionCoder = new CANcoder(IntakeConstants.expansionCoderID);
+  private double expansionCoderRadians;
+
 
   private SparkClosedLoopController pidController;
 
@@ -46,6 +54,15 @@ public class Intake extends SubsystemBase {
 
   }
 
+//ticking function
+ @Override
+  public void periodic() {
+
+
+  this.expansionCoderRadians = getEncoderRadians();
+
+  }
+
   public void intake() {
     intakeMotor.set(IntakeConstants.intakeSpeed);
   }
@@ -53,6 +70,10 @@ public class Intake extends SubsystemBase {
   public void stopIntake() {
     intakeMotor.stopMotor();
   }
+
+
+
+
 
   
   public void expand() {
@@ -62,5 +83,17 @@ public class Intake extends SubsystemBase {
   public void contract() {
     pidController.setSetpoint(IntakeConstants.startingSetPoint, ControlType.kPosition);
   }
+
+
+
+//expansion CANCoder functions
+  public double getEncoder() {
+    return expansionCoder.getAbsolutePosition().getValueAsDouble() * 360.0;
+  }
+
+  public double getEncoderRadians() {
+    return Units.degreesToRadians(getEncoder());
+  }
+
 
 }

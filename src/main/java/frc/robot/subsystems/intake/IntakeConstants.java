@@ -2,6 +2,7 @@ package frc.robot.subsystems.intake;
 
 public class IntakeConstants {
 
+    public static final int expansionCoderID = 40;
     public static final int intakeMotorID = 33;
     public static final int expansionMotorID = 34;
 
