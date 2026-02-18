@@ -167,7 +167,8 @@ public class RobotContainer {
   private void configureBindings() {
     c_driveStick.leftBumper().whileTrue(Commands.run(shooter::spinUpFlyWheel, shooter));
     c_driveStick.leftBumper().whileFalse(Commands.run(shooter::slowFlyWheel, shooter));
-    c_driveStick.povDown().onTrue(Commands.run(shooter::stopFlyWheel, shooter));
+    // Do not any under circumstances uncomments this
+    // c_driveStick.povDown().onTrue(Commands.run(shooter::stopFlyWheel, shooter));
 
     c_driveStick.a().whileTrue(shooter.feedBalls());
 

@@ -30,6 +30,7 @@ public class Shooter extends SubsystemBase {
     final SparkFlexConfig flyWheelMotorConfig = new SparkFlexConfig();
     final SparkMaxConfig indexerMotorConfig = new SparkMaxConfig();
 
+
     // configs
     flyWheelMotorConfig.idleMode(IdleMode.kCoast);
     indexerMotorConfig.idleMode(IdleMode.kBrake);
@@ -56,18 +57,19 @@ public class Shooter extends SubsystemBase {
 
   public void spinUpFlyWheel() {
     this.stoped = false;
-    pidController.setSetpoint(ShooterConstants.setPoint, ControlType.kVelocity);
+    //this.pidController.setSetpoint(ShooterConstants.setPoint, ControlType.kVelocity);
+    flyWheelMotor.set(0.2);
   }
 
   public void slowFlyWheel() {
     if (!this.stoped) {
-      this.pidController.setSetpoint(ShooterConstants.setPoint, ControlType.kVoltage);
+      this.pidController.setSetpoint(0, ControlType.kVoltage);
     }
   }
 
   public void stopFlyWheel() {
     this.stoped = true;
-    this.pidController.setSetpoint(ShooterConstants.setPoint, ControlType.kVelocity);
+    this.pidController.setSetpoint(0, ControlType.kVelocity);
   }
 
   public Command feedBalls() {

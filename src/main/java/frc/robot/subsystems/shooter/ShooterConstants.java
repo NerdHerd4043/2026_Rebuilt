@@ -8,7 +8,7 @@ public class ShooterConstants {
     public static final double setPoint = 100;
 
     public static final class FlyWheelPID {
-        public static final double p = 0.05;
+        public static final double p = 0.001;
         public static final double i = 0;
         public static final double d = 0;
 
