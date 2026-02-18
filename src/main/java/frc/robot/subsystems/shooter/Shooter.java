@@ -44,7 +44,7 @@ public class Shooter extends SubsystemBase {
       .maxOutput(ShooterConstants.FlyWheelPID.maxOutput)
       .minOutput(ShooterConstants.FlyWheelPID.minOutput);
 
-    flyWheelMotorConfig.closedLoop.feedForward.kS(ShooterConstants.FlyWheelFF.s)
+    flyWheelMotorConfig.closedLoop.feedForward
       .kV(ShooterConstants.FlyWheelFF.v);
 
     flyWheelMotor.configure(flyWheelMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -55,20 +55,19 @@ public class Shooter extends SubsystemBase {
   }
 
   public void spinUpFlyWheel() {
-    // this.stoped = false;
-    // pidController.setSetpoint(ShooterConstants.setPoint, ControlType.kVelocity);
-    // flyWheelMotor.set(0.2);
+    this.stoped = false;
+    pidController.setSetpoint(ShooterConstants.setPoint, ControlType.kVelocity);
   }
 
   public void slowFlyWheel() {
     if (!this.stoped) {
-      this.pidController.setSetpoint(0, ControlType.kVoltage);
+      this.pidController.setSetpoint(ShooterConstants.setPoint, ControlType.kVoltage);
     }
   }
 
   public void stopFlyWheel() {
     this.stoped = true;
-    this.pidController.setSetpoint(0, ControlType.kVelocity);
+    this.pidController.setSetpoint(ShooterConstants.setPoint, ControlType.kVelocity);
   }
 
   public Command feedBalls() {

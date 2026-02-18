@@ -8,7 +8,7 @@ public class ShooterConstants {
     public static final double setPoint = 100;
 
     public static final class FlyWheelPID {
-        public static final double p = 0.1;
+        public static final double p = 0.05;
         public static final double i = 0;
         public static final double d = 0;
 
@@ -17,7 +17,7 @@ public class ShooterConstants {
     }
 
     public static final class FlyWheelFF {
-        public static final double s = 1.0;
-        public static final double v = 0.1;
+        public static final double s = 0.01;
+        public static final double v = 0.01;
     }
 }
