@@ -2,34 +2,41 @@ package frc.robot.subsystems.intake;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkFlexConfig;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.ctre.phoenix6.hardware.CANcoder;
+
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.intake.IntakeConstants.ExpansionFF;
+import frc.robot.subsystems.intake.IntakeConstants.ExpansionPID;
 import edu.wpi.first.epilogue.Logged;
 
 @Logged
 public class Intake extends SubsystemBase {
-  private SparkFlex intakeMotor = new SparkFlex(IntakeConstants.intakeMotorID, MotorType.kBrushless);
-  private SparkFlex expansionMotor = new SparkFlex(IntakeConstants.expansionMotorID, MotorType.kBrushless);
+  private SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeMotorID, MotorType.kBrushless);
+  private SparkMax expansionMotor = new SparkMax(IntakeConstants.expansionMotorID, MotorType.kBrushless);
 
   //init CANcoder for expansion motor
-  private CANcoder expansionCoder = new CANcoder(IntakeConstants.expansionCoderID);
-  private double expansionCoderRadians;
+  private CANcoder expansionCoder = new CANcoder(IntakeConstants.expansionEncoderID);
 
+  private ArmFeedforward feedforward = new ArmFeedforward(ExpansionFF.s,
+      ExpansionFF.g,
+      ExpansionFF.v);
 
-  private SparkClosedLoopController pidController;
+  private ProfiledPIDController pidController = new ProfiledPIDController(ExpansionPID.p, ExpansionPID.i, ExpansionPID.d,
+     new TrapezoidProfile.Constraints(6, 5));
 
   public Intake() {
-    final SparkFlexConfig intakeMotorConfig = new SparkFlexConfig();
-    final SparkFlexConfig expansionMotorConfig = new SparkFlexConfig();
+    final SparkMaxConfig intakeMotorConfig = new SparkMaxConfig();
+    final SparkMaxConfig expansionMotorConfig = new SparkMaxConfig();
 
     intakeMotorConfig.idleMode(IdleMode.kBrake);
     expansionMotorConfig.idleMode(IdleMode.kBrake);
@@ -37,29 +44,8 @@ public class Intake extends SubsystemBase {
     intakeMotorConfig.inverted(false);
     expansionMotorConfig.inverted(false);
 
-    // set PID coeffecients
-    expansionMotorConfig.closedLoop.p(IntakeConstants.ExpansionPID.p)
-      .i(IntakeConstants.ExpansionPID.i)
-      .d(IntakeConstants.ExpansionPID.d)
-      .maxOutput(IntakeConstants.ExpansionPID.maxOutput)
-      .minOutput(IntakeConstants.ExpansionPID.minOutput);
-
-    expansionMotorConfig.closedLoop.feedForward.kS(IntakeConstants.ExpansionFF.s)
-      .kV(IntakeConstants.ExpansionFF.v);
-
     intakeMotor.configure(intakeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     expansionMotor.configure(expansionMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-    pidController = expansionMotor.getClosedLoopController();
-
-  }
-
-//ticking function
- @Override
-  public void periodic() {
-
-
-  this.expansionCoderRadians = getEncoderRadians();
 
   }
 
@@ -70,21 +56,14 @@ public class Intake extends SubsystemBase {
   public void stopIntake() {
     intakeMotor.stopMotor();
   }
-
-
-
-
-
   
   public void expand() {
-    pidController.setSetpoint(IntakeConstants.expansionSetPoint, ControlType.kPosition);
+
   }
 
   public void contract() {
-    pidController.setSetpoint(IntakeConstants.startingSetPoint, ControlType.kPosition);
+
   }
-
-
 
 //expansion CANCoder functions
   public double getEncoder() {
@@ -95,5 +74,10 @@ public class Intake extends SubsystemBase {
     return Units.degreesToRadians(getEncoder());
   }
 
-
+  //ticking function
+  @Override
+  public void periodic() {
+    double ffOutput = -feedforward.calculate((pidController.getSetpoint()).position, pidController.getSetpoint().velocity);
+    expansionMotor.setVoltage(ffOutput - pidController.calculate(getEncoderRadians()));
+  }
 }
