@@ -8,7 +8,8 @@ public class IntakeConstants {
 
     public static final double intakeSpeed = 0.25;
 
-
+    public static final double outPos = 180;
+    public static final double inPos = 0;
 
     public static final class ExpansionPID {
         public static final double p = 0;

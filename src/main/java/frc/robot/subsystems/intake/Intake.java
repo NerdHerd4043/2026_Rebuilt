@@ -47,6 +47,7 @@ public class Intake extends SubsystemBase {
     intakeMotor.configure(intakeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     expansionMotor.configure(expansionMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+    this.pidController.setGoal(getEncoderRadians());
   }
 
   public void intake() {
@@ -58,11 +59,11 @@ public class Intake extends SubsystemBase {
   }
   
   public void expand() {
-
+    this.pidController.setGoal(IntakeConstants.outPos);
   }
 
   public void contract() {
-
+    this.pidController.setGoal(IntakeConstants.inPos);
   }
 
 //expansion CANCoder functions
@@ -77,7 +78,7 @@ public class Intake extends SubsystemBase {
   //ticking function
   @Override
   public void periodic() {
-    double ffOutput = -feedforward.calculate((pidController.getSetpoint()).position, pidController.getSetpoint().velocity);
-    expansionMotor.setVoltage(ffOutput - pidController.calculate(getEncoderRadians()));
+    double ffOutput = -feedforward.calculate((pidController.getSetpoint()).position, this.pidController.getSetpoint().velocity);
+    expansionMotor.setVoltage(ffOutput - this.pidController.calculate(getEncoderRadians()));
   }
 }
