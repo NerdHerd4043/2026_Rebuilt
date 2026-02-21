@@ -23,6 +23,11 @@ public class Intake extends SubsystemBase {
   private SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeMotorID, MotorType.kBrushless);
   private SparkMax expansionMotor = new SparkMax(IntakeConstants.expansionMotorID, MotorType.kBrushless);
 
+
+  //boolean toggle value
+   private boolean isExtended = false;
+
+
   //init CANcoder for expansion motor
   private CANcoder expansionCoder = new CANcoder(IntakeConstants.expansionEncoderID);
 
@@ -59,10 +64,22 @@ public class Intake extends SubsystemBase {
   
   public void expand() {
     this.pidController.setGoal(IntakeConstants.outPos);
+    isExtended = true;
   }
 
   public void contract() {
     this.pidController.setGoal(IntakeConstants.inPos);
+    isExtended = false;
+  }
+
+  public void toggleintake(){
+    if(isExtended){
+    contract();
+    }
+    else{
+    expand();
+    }
+    
   }
 
 //expansion CANCoder functions
