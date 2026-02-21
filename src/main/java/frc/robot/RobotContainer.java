@@ -171,7 +171,7 @@ public class RobotContainer {
     //left bumper pushes indexer to feed balls into flywheel
     c_driveStick.rightBumper().whileTrue(shooter.feedBalls());
     //right trigger runs the intake
-    c_driveStick.leftTrigger().whileTrue(Commands.run(intake::intake, intake));
+    c_driveStick.leftTrigger().whileTrue(intake.run(intake::intake).andThen(intake::stopIntake, intake));
     //"a" button toggles the intake/outake. VERY EXPERIMENTAL
     c_driveStick.a().onTrue(Commands.run(intake::toggleintake, intake));
 

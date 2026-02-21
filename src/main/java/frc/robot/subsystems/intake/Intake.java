@@ -3,7 +3,9 @@ package frc.robot.subsystems.intake;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -21,7 +23,7 @@ import edu.wpi.first.epilogue.Logged;
 @Logged
 public class Intake extends SubsystemBase {
   private SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeMotorID, MotorType.kBrushless);
-  private SparkMax expansionMotor = new SparkMax(IntakeConstants.expansionMotorID, MotorType.kBrushless);
+  private SparkFlex expansionMotor = new SparkFlex(IntakeConstants.expansionMotorID, MotorType.kBrushless);
 
 
   //boolean toggle value
@@ -40,12 +42,12 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     final SparkMaxConfig intakeMotorConfig = new SparkMaxConfig();
-    final SparkMaxConfig expansionMotorConfig = new SparkMaxConfig();
+    final SparkFlexConfig expansionMotorConfig = new SparkFlexConfig();
 
     intakeMotorConfig.idleMode(IdleMode.kBrake);
     expansionMotorConfig.idleMode(IdleMode.kBrake);
 
-    intakeMotorConfig.inverted(false);
+    intakeMotorConfig.inverted(true);
     expansionMotorConfig.inverted(false);
 
     intakeMotor.configure(intakeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
