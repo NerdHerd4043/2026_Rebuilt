@@ -79,7 +79,6 @@ public class Intake extends SubsystemBase {
     else{
     expand();
     }
-    
   }
 
 //expansion CANCoder functions
