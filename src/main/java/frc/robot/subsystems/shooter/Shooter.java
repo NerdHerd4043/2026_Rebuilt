@@ -73,7 +73,7 @@ public class Shooter extends SubsystemBase {
   // }
 
   public Command feedBalls() {
-    return this.run(() -> {if (this.pidController.isAtSetpoint()) { indexerMotor.set(ShooterConstants.indexerFeedSpeed); }})
+    return this.run(() -> {if (!this.pidController.isAtSetpoint()) { indexerMotor.set(ShooterConstants.indexerFeedSpeed); }})
       .finallyDo(() -> indexerMotor.stopMotor());
   }
 

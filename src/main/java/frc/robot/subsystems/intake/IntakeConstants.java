@@ -6,7 +6,7 @@ public class IntakeConstants {
     public static final int expansionMotorID = 34;
     public static final int expansionEncoderID = 40;
 
-    public static final double intakeSpeed = 0.25;
+    public static final double intakeSpeed = 0.60;
 
     public static final double outPos = 180;
     public static final double inPos = 0;
