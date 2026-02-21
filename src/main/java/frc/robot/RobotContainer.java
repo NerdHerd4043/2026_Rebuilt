@@ -166,16 +166,17 @@ public class RobotContainer {
    */
   private void configureBindings() {
     //left trigger slows/spins up the flywheel
-    c_driveStick.leftTrigger().whileTrue(Commands.run(shooter::spinUpFlyWheel, shooter));
-    c_driveStick.leftTrigger().whileFalse(Commands.run(shooter::slowFlyWheel, shooter));
+    c_driveStick.rightTrigger().whileTrue(Commands.run(shooter::spinUpFlyWheel, shooter));
+    c_driveStick.rightTrigger().whileFalse(Commands.run(shooter::slowFlyWheel, shooter));
     //left bumper pushes indexer to feed balls into flywheel
-    c_driveStick.leftBumper().whileTrue(shooter.feedBalls());
+    c_driveStick.rightBumper().whileTrue(shooter.feedBalls());
     //right trigger runs the intake
-    c_driveStick.rightTrigger().whileTrue(Commands.run(intake::intake, intake));
+    c_driveStick.leftTrigger().whileTrue(Commands.run(intake::intake, intake));
     //"a" button toggles the intake/outake. VERY EXPERIMENTAL
     c_driveStick.a().onTrue(Commands.run(intake::toggleintake, intake));
 
     // Do not any under circumstances uncomments this
+
     // c_driveStick.povDown().onTrue(Commands.run(shooter::stopFlyWheel, shooter));
 
 
