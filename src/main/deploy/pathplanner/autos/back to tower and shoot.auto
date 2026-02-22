@@ -9,6 +9,18 @@
           "data": {
             "pathName": "move back"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoDropIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootOneBall"
+          }
         }
       ]
     }

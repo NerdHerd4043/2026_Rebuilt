@@ -67,6 +67,7 @@ public class RobotContainer {
 
   //register pathplanner commands
   NamedCommands.registerCommand("ShootOneBall", shooter.shootOneBall());
+  NamedCommands.registerCommand("AutoDropIntake", intake.autoDropIntake());
 
 
     configureNamedCommands();

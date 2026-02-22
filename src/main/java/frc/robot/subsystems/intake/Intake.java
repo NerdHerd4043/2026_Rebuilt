@@ -11,7 +11,9 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.ctre.phoenix6.hardware.CANcoder;
 
 import edu.wpi.first.math.util.Units;
-
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.epilogue.Logged;
 
@@ -73,6 +75,21 @@ public class Intake extends SubsystemBase {
     expand();
     }
   }
+
+//auto commands
+  public Command autoDropIntake(){
+
+    Command pullIntake = new RunCommand(this::contract).withTimeout(0.25);
+    Command waitCommand = Commands.waitSeconds(0.5);
+    Command dropIntake = new RunCommand(this::expand).withTimeout(5.25);
+    return Commands.sequence(
+        pullIntake,
+        waitCommand,
+        dropIntake
+    );
+
+  }
+
 
 //expansion CANCoder functions
   public double getEncoder() {
