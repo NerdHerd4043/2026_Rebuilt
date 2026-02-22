@@ -52,11 +52,17 @@ public class Intake extends SubsystemBase {
   }
 
   public void expand() {
+    expansionMotor.set(0.125);
     isExtended = true;
   }
 
   public void contract() {
+    expansionMotor.set(-0.125);
     isExtended = false;
+  }
+
+  public void stopExpanedtion() {
+    expansionMotor.set(0);
   }
 
   public void toggleintake(){
