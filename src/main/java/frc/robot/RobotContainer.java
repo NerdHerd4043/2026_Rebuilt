@@ -179,6 +179,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     //left trigger slows/spins up the flywheel
+
     c_driveStick.rightTrigger().whileTrue(Commands.run(shooter::spinUpFlyWheel, shooter));
     c_driveStick.rightTrigger().whileFalse(Commands.run(shooter::slowFlyWheel, shooter));
     //left bumper pushes indexer to feed balls into flywheel
@@ -189,11 +190,10 @@ public class RobotContainer {
     //"a" button toggles the intake/outake. VERY EXPERIMENTAL
     c_driveStick.a().onTrue(Commands.run(intake::toggleintake, intake));
 
+    c_driveStick.povUp().onTrue(Commands.runOnce(gyro::reset));
+
     // Do not any under circumstances uncomments this
-
     // c_driveStick.povDown().onTrue(Commands.run(shooter::stopFlyWheel, shooter));
-
-
   }
 
   private void configureNamedCommands() {
