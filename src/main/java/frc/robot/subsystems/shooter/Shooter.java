@@ -1,5 +1,6 @@
 package frc.robot.subsystems.shooter;
 
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
@@ -14,7 +15,12 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 @Logged
 public class Shooter extends SubsystemBase {
@@ -71,6 +77,20 @@ public class Shooter extends SubsystemBase {
   //   this.stoped = true;
   //   this.pidController.setSetpoint(0, ControlType.kVelocity);
   // }
+
+  public Command shootOneBall(){
+
+    Command runFlywheel = new RunCommand(this::spinUpFlyWheel).withTimeout(4);
+    Command waitCommand = Commands.waitSeconds(0.2);
+    Command runShooter = feedBalls();
+    return Commands.sequence(
+        runFlywheel,
+        waitCommand,
+        runShooter
+    );
+
+  }
+
 
   public Command feedBalls() {
     return this.run(() -> {if (!this.pidController.isAtSetpoint()) { indexerMotor.set(ShooterConstants.indexerFeedSpeed); }})

@@ -12,6 +12,7 @@ import frc.robot.subsystems.drivebase.DriveConstants;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 // import com.pathplanner.lib.auto.NamedCommands;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
@@ -63,6 +64,11 @@ public class RobotContainer {
   public RobotContainer() {
     SignalLogger.enableAutoLogging(false);
 
+
+  //register pathplanner commands
+  NamedCommands.registerCommand("ShootOneBall", shooter.shootOneBall());
+
+
     configureNamedCommands();
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Mode", autoChooser);
@@ -72,6 +78,11 @@ public class RobotContainer {
         new Drive(drivebase,
             () -> getScaledXY(),
             () -> scaleRotationAxis(driveStick.getRightX())));
+
+
+
+
+
 
     configureBindings();
   }
@@ -149,6 +160,8 @@ public class RobotContainer {
   public boolean getBeamBreak() {
     return !beamBreak.get();
   }
+
+
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be
