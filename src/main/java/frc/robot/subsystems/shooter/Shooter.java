@@ -63,8 +63,12 @@ public class Shooter extends SubsystemBase {
 
   public void spinUpFlyWheel() {
     this.stoped = false;
-    this.pidController.setSetpoint(ShooterConstants.setPoint, ControlType.kVelocity);
-    // flyWheelMotor.set(0.05);
+    this.pidController.setSetpoint(ShooterConstants.lowSetPoint, ControlType.kVelocity);
+  }
+
+  public void spinUpFlyWheelFast() {
+    this.stoped = false;
+    this.pidController.setSetpoint(ShooterConstants.highSetPoint, ControlType.kVelocity);
   }
 
   public void slowFlyWheel() {
@@ -94,6 +98,11 @@ public class Shooter extends SubsystemBase {
 
   public Command feedBalls() {
     return this.run(() -> {if (!this.pidController.isAtSetpoint()) { indexerMotor.set(ShooterConstants.indexerFeedSpeed); }})
+      .finallyDo(() -> indexerMotor.stopMotor());
+  }
+
+  public Command reverseIndexer() {
+    return this.run(() -> {if (!this.pidController.isAtSetpoint()) { indexerMotor.set(-ShooterConstants.indexerFeedSpeed); }})
       .finallyDo(() -> indexerMotor.stopMotor());
   }
 

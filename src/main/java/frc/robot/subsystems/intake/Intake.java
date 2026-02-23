@@ -49,12 +49,16 @@ public class Intake extends SubsystemBase {
     intakeMotor.set(IntakeConstants.intakeSpeed);
   }
 
+  public void reveseIntake() {
+    intakeMotor.set(-IntakeConstants.intakeSpeed);
+  }
+
   public void stopIntake() {
     intakeMotor.stopMotor();
   }
 
   public void expand() {
-    expansionMotor.set(0.125);
+    expansionMotor.set(0.165);
     isExtended = true;
   }
 
