@@ -9,6 +9,16 @@ import frc.robot.subsystems.drivebase.Drivebase;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.drivebase.DriveConstants;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.cscore.UsbCamera;
+
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -80,13 +90,18 @@ public class RobotContainer {
             () -> getScaledXY(),
             () -> scaleRotationAxis(driveStick.getRightX())));
 
+  // Define the stream URL. The default Limelight stream is at port 5800 with the stream.mjpg action.
+    // Replace "limelight" with your camera's name if you changed it in the web interface.
+    String limelightStreamUrl = "http://limelight.loc:5801";
 
+    // Create an HttpCamera object
+    HttpCamera limelightFeed = new HttpCamera("Limelight Camera", limelightStreamUrl);
 
-
-
-
-    configureBindings();
+    // Start automatic capture. This puts the camera on the CameraServer, making it available to Shuffleboard.
+    CameraServer.startAutomaticCapture(limelightFeed);
   }
+
+
 
   private double deadband(double input, double deadband) {
     if (Math.abs(input) < deadband) {
