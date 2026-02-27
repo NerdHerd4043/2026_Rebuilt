@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 public class Shooter extends SubsystemBase {
   private SparkFlex flyWheelMotor = new SparkFlex(ShooterConstants.flyWheelMotorID, MotorType.kBrushless);
   private SparkMax indexerMotor = new SparkMax(ShooterConstants.indexerMotorID, MotorType.kBrushless);
+  private SparkFlex disrupterMotor = new SparkFlex(ShooterConstants.disrupterMotorID, MotorType.kBrushless);
 
   private final SparkClosedLoopController pidController;
   private final RelativeEncoder encoder;
@@ -32,14 +33,16 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     final SparkFlexConfig flyWheelMotorConfig = new SparkFlexConfig();
     final SparkMaxConfig indexerMotorConfig = new SparkMaxConfig();
-
+    final SparkFlexConfig disrupterMotorConfig = new SparkFlexConfig();
 
     // configs
     flyWheelMotorConfig.idleMode(IdleMode.kCoast);
     indexerMotorConfig.idleMode(IdleMode.kBrake);
+    disrupterMotorConfig.idleMode(IdleMode.kCoast);
 
     flyWheelMotorConfig.inverted(true);
     indexerMotorConfig.inverted(true);
+    disrupterMotorConfig.inverted(true);
 
     // set PID coeffecients
     flyWheelMotorConfig.closedLoop.p(ShooterConstants.FlyWheelPID.p)
@@ -53,6 +56,7 @@ public class Shooter extends SubsystemBase {
 
     flyWheelMotor.configure(flyWheelMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     indexerMotor.configure(indexerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    disrupterMotor.configure(disrupterMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     this.pidController = flyWheelMotor.getClosedLoopController();
     this.encoder = flyWheelMotor.getEncoder();
@@ -94,8 +98,8 @@ public class Shooter extends SubsystemBase {
 
 
   public Command feedBalls() {
-    return this.run(() -> {if (!this.pidController.isAtSetpoint()) { indexerMotor.set(ShooterConstants.indexerFeedSpeed); }})
-      .finallyDo(() -> indexerMotor.stopMotor());
+    return this.run(() -> {{ indexerMotor.set(ShooterConstants.indexerFeedSpeed); disrupterMotor.set(ShooterConstants.disrupterSpeed); }})
+      .finallyDo(() -> { indexerMotor.stopMotor(); disrupterMotor.stopMotor(); });
   }
 
   public Command reverseIndexer() {
