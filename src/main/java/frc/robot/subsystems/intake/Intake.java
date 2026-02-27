@@ -22,9 +22,6 @@ public class Intake extends SubsystemBase {
   private SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeMotorID, MotorType.kBrushless);
   private SparkFlex expansionMotor = new SparkFlex(IntakeConstants.expansionMotorID, MotorType.kBrushless);
 
-  //boolean toggle value
-   private boolean isExtended = false;
-
    private enum expansionPositions {INTAKE, SHOOTING, REST};
    private expansionPositions expansionPosition = expansionPositions.REST;
 
@@ -58,35 +55,24 @@ public class Intake extends SubsystemBase {
     intakeMotor.stopMotor();
   }
 
-  public void expand() {
-    expansionMotor.set(0.165);
-    isExtended = true;
+  public void setToIntakePos() {
+    expansionPosition = expansionPositions.INTAKE;
   }
 
-  public void contract() {
-    expansionMotor.set(-0.125);
-    isExtended = false;
+  public void setToShootPos() {
+    expansionPosition = expansionPositions.SHOOTING;
   }
 
   public void stopExpanedtion() {
     expansionMotor.set(0);
   }
 
-  public void toggleintake(){
-    if(isExtended){
-    contract();
-    }
-    else{
-    expand();
-    }
-  }
-
 //auto commands
   public Command autoDropIntake(){
 
-    Command pullIntake = new RunCommand(this::contract).withTimeout(0.25);
+    Command pullIntake = new RunCommand(this::setToShootPos).withTimeout(0.25);
     Command waitCommand = Commands.waitSeconds(0.5);
-    Command dropIntake = new RunCommand(this::expand).withTimeout(5.25);
+    Command dropIntake = new RunCommand(this::setToIntakePos).withTimeout(5.25);
     return Commands.sequence(
         pullIntake,
         waitCommand,

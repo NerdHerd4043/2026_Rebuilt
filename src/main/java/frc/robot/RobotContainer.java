@@ -204,15 +204,12 @@ public class RobotContainer {
     // //"a" button toggles the intake/outake. VERY EXPERIMENTAL
     // c_driveStick.a().onTrue(Commands.run(intake::toggleintake, intake));
 
-    c_driveStick.a().whileTrue(intake.run(intake::expand));
-    c_driveStick.a().whileFalse(intake.run(intake::stopExpanedtion));
-    c_driveStick.b().whileTrue(intake.run(intake::contract));
-    c_driveStick.b().whileFalse(intake.run(intake::stopExpanedtion));
+    c_driveStick.a().whileTrue(intake.run(intake::setToIntakePos));
+    //c_driveStick.a().whileFalse(intake.run(intake::stopExpanedtion));
+    c_driveStick.b().whileTrue(intake.run(intake::setToShootPos));
+    //c_driveStick.b().whileFalse(intake.run(intake::stopExpanedtion));
 
     c_driveStick.povUp().onTrue(Commands.runOnce(gyro::reset));
-
-    // Do not any under circumstances uncomments this
-    // c_driveStick.povDown().onTrue(Commands.run(shooter::stopFlyWheel, shooter));
   }
 
   private void configureNamedCommands() {
