@@ -22,10 +22,11 @@ public class Intake extends SubsystemBase {
   private SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeMotorID, MotorType.kBrushless);
   private SparkFlex expansionMotor = new SparkFlex(IntakeConstants.expansionMotorID, MotorType.kBrushless);
 
-
   //boolean toggle value
    private boolean isExtended = false;
 
+   private enum expansionPositions {INTAKE, SHOOTING, REST};
+   private expansionPositions expansionPosition = expansionPositions.REST;
 
   //init CANcoder for expansion motor
   private CANcoder expansionCoder = new CANcoder(IntakeConstants.expansionEncoderID);
@@ -107,6 +108,27 @@ public class Intake extends SubsystemBase {
   //ticking function
   @Override
   public void periodic() {
-    
+    if (expansionPosition == expansionPositions.INTAKE) {
+      if (getEncoderRadians() < IntakeConstants.intakePos) {
+        expansionMotor.set(IntakeConstants.expansionSpeed);
+      }
+      else if (getEncoderRadians() > IntakeConstants.intakePos) {
+        expansionMotor.set(-IntakeConstants.expansionSpeed);
+      }
+      else {
+        expansionMotor.stopMotor();
+      }
+    }
+    else if (expansionPosition == expansionPositions.SHOOTING) {
+      if (getEncoderRadians() < IntakeConstants.shootPos) {
+        expansionMotor.set(IntakeConstants.expansionSpeed);
+      }
+      else if (getEncoderRadians() > IntakeConstants.shootPos) {
+        expansionMotor.set(-IntakeConstants.expansionSpeed);
+      }
+      else {
+        expansionMotor.stopMotor();
+      }
+    }
   }
 }
