@@ -46,6 +46,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void intake() {
+    lowerExpansion();
     intakeMotor.set(IntakeConstants.intakeSpeed);
   }
 

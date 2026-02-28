@@ -54,7 +54,7 @@ public class Shooter extends SubsystemBase {
     final SparkFlexConfig disrupterMotorConfig = new SparkFlexConfig();
     disrupterMotorConfig
         .idleMode(IdleMode.kCoast)
-        .inverted(true);
+        .inverted(false);
     disrupterMotor.configure(disrupterMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     this.pidController = flyWheelMotor.getClosedLoopController();
