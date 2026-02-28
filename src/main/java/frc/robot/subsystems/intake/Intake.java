@@ -46,7 +46,6 @@ public class Intake extends SubsystemBase {
   }
 
   public void intake() {
-    lowerExpansion();
     intakeMotor.set(IntakeConstants.intakeSpeed);
   }
 
@@ -65,7 +64,7 @@ public class Intake extends SubsystemBase {
   // auto commands
   // TODO: fix timings?
   public Command autoDropIntake() {
-    Command pullIntake = this.runEnd(this::moveExpansionUp, this.expansionMotor::stopMotor).withTimeout(0.25);
+    Command pullIntake = this.runEnd(this::moveExpansionUp, this.expansionMotor::stopMotor).withTimeout(0.1);
     Command waitCommand = Commands.waitSeconds(0.5);
     Command dropIntake = this.runEnd(this::moveExpansionDown, this.expansionMotor::stopMotor).withTimeout(5.25);
     Command autoDrop = Commands.sequence(
