@@ -66,7 +66,7 @@ public class Intake extends SubsystemBase {
     expansionPosition = ExpansionPositions.SHOOTING;
   }
 
-  public void stopExpanedtion() {
+  public void stopExpansion() {
     expansionMotor.set(0);
   }
 

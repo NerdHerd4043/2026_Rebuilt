@@ -27,7 +27,7 @@ public class Shooter extends SubsystemBase {
   private final SparkClosedLoopController pidController;
   private final RelativeEncoder encoder;
 
-  private boolean stoped;
+  private boolean stopped;
 
   public Shooter() {
     final SparkFlexConfig flyWheelMotorConfig = new SparkFlexConfig();
@@ -61,20 +61,26 @@ public class Shooter extends SubsystemBase {
     this.encoder = flyWheelMotor.getEncoder();
   }
 
-  public void spinUpFlyWheel() {
-    this.stoped = false;
-    this.pidController.setSetpoint(ShooterConstants.lowSetPoint, ControlType.kVelocity);
+  private Command spinUpFlywheel(double setpoint) {
+    return this.runOnce(() -> {
+      this.stopped = false;
+      this.pidController.setSetpoint(setpoint, ControlType.kVelocity);
+    });
   }
 
-  public void spinUpFlyWheelFast() {
-    this.stoped = false;
-    this.pidController.setSetpoint(ShooterConstants.highSetPoint, ControlType.kVelocity);
+  public Command flywheelFast() {
+    return this.spinUpFlywheel(ShooterConstants.highSetPoint);
   }
 
-  public void slowFlyWheel() {
-    if (!this.stoped) {
+  public Command flywheelSlow() {
+    return this.spinUpFlywheel(ShooterConstants.lowSetPoint);
+  }
+
+  public Command stopFlywheel() {
+    return this.runOnce(() -> {
+      this.stopped = true;
       this.pidController.setSetpoint(0, ControlType.kVoltage);
-    }
+    });
   }
 
   // public void stopFlyWheel() {
@@ -84,8 +90,8 @@ public class Shooter extends SubsystemBase {
 
   public Command shootOneBall() {
 
-    Command runFlywheel = this.run(this::spinUpFlyWheel).withTimeout(4);
-    Command waitCommand = Commands.waitSeconds(0.2);
+    Command runFlywheel = this.flywheelSlow();
+    Command waitCommand = Commands.waitSeconds(4.2);
     Command runShooter = feedBalls();
     return Commands.sequence(
         runFlywheel,
@@ -116,6 +122,6 @@ public class Shooter extends SubsystemBase {
     // SmartDashboard stuff
     SmartDashboard.putNumber("Flywheel speed (rpm)", this.encoder.getVelocity());
     SmartDashboard.putBoolean("Flywheel is at velocity setpoint", this.pidController.isAtSetpoint());
-    SmartDashboard.putBoolean("Flywheel is stoped", this.stoped);
+    SmartDashboard.putBoolean("Flywheel is stoped", this.stopped);
   }
 }
