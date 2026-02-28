@@ -10,8 +10,11 @@ public class IntakeConstants {
 
   public static final double expansionSpeed = 0.05;
 
-  public static final double intakePos = 180;
-  public static final double shootPos = 0;
+  // TODO: remeasure intakePos
+  public static final double intakePos = 0.27;
+  // TODO: measure shootPos
+  public static final double shootPos = 0.2;
+  public static final double restPos = 0;
 
   public static final class ExpansionPID {
     public static final double p = 0;
