@@ -191,18 +191,15 @@ public class RobotContainer {
     c_driveStick.rightTrigger().onTrue(shooter.flywheelSlow());
     c_driveStick.rightTrigger().onFalse(shooter.stopFlywheel());
 
-    c_driveStick.leftTrigger().whileTrue(intake.raiseExpansion());
-    c_driveStick.leftTrigger()
-        .whileTrue(intakeCommand);
+    c_driveStick.leftTrigger().whileTrue(Commands.parallel(
+      intake.raiseExpansion(), intakeCommand));
 
     // left bumper pushes indexer to feed balls into flywheel
     c_driveStick.rightBumper().whileTrue(shooter.feedBalls());
 
     // right trigger runs the intake
-    c_driveStick
-        .leftBumper()
-        .whileTrue(intakeCommand);
-    c_driveStick.leftBumper().whileTrue(intake.run(intake::lowerExpansion));
+    c_driveStick.leftBumper().whileTrue(Commands.parallel(
+      intake.lowerExpansion(), intakeCommand));
 
     c_driveStick.povUp().onTrue(Commands.runOnce(gyro::reset));
 
