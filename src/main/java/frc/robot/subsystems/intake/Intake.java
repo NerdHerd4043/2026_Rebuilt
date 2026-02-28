@@ -22,7 +22,7 @@ public class Intake extends SubsystemBase {
   private SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeMotorID, MotorType.kBrushless);
   private SparkFlex expansionMotor = new SparkFlex(IntakeConstants.expansionMotorID, MotorType.kBrushless);
 
-  private enum ExpansionPositions {
+  public enum ExpansionPositions {
     INTAKE, SHOOTING, REST
   };
 
