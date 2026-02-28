@@ -27,8 +27,6 @@ public class Shooter extends SubsystemBase {
   private final SparkClosedLoopController pidController;
   private final RelativeEncoder encoder;
 
-  private boolean stopped;
-
   public Shooter() {
     final SparkFlexConfig flyWheelMotorConfig = new SparkFlexConfig();
     final SparkMaxConfig indexerMotorConfig = new SparkMaxConfig();
@@ -63,11 +61,11 @@ public class Shooter extends SubsystemBase {
 
   private Command spinUpFlywheel(double setpoint) {
     return this.runOnce(() -> {
-      this.stopped = false;
       this.pidController.setSetpoint(setpoint, ControlType.kVelocity);
     });
   }
 
+  // Possibly unused
   public Command flywheelFast() {
     return this.spinUpFlywheel(ShooterConstants.highSetPoint);
   }
@@ -78,15 +76,9 @@ public class Shooter extends SubsystemBase {
 
   public Command stopFlywheel() {
     return this.runOnce(() -> {
-      this.stopped = true;
       this.pidController.setSetpoint(0, ControlType.kVoltage);
     });
   }
-
-  // public void stopFlyWheel() {
-  // this.stoped = true;
-  // this.pidController.setSetpoint(0, ControlType.kVelocity);
-  // }
 
   public Command shootOneBall() {
 
@@ -122,6 +114,5 @@ public class Shooter extends SubsystemBase {
     // SmartDashboard stuff
     SmartDashboard.putNumber("Flywheel speed (rpm)", this.encoder.getVelocity());
     SmartDashboard.putBoolean("Flywheel is at velocity setpoint", this.pidController.isAtSetpoint());
-    SmartDashboard.putBoolean("Flywheel is stoped", this.stopped);
   }
 }
