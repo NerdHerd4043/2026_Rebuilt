@@ -28,31 +28,33 @@ public class Shooter extends SubsystemBase {
   private final RelativeEncoder encoder;
 
   public Shooter() {
+    // Flywheel motor config
+    // @formatter:off
     final SparkFlexConfig flyWheelMotorConfig = new SparkFlexConfig();
-    final SparkMaxConfig indexerMotorConfig = new SparkMaxConfig();
-    final SparkFlexConfig disrupterMotorConfig = new SparkFlexConfig();
-
-    // configs
-    flyWheelMotorConfig.idleMode(IdleMode.kCoast);
-    indexerMotorConfig.idleMode(IdleMode.kBrake);
-    disrupterMotorConfig.idleMode(IdleMode.kCoast);
-
-    flyWheelMotorConfig.inverted(true);
-    indexerMotorConfig.inverted(true);
-    disrupterMotorConfig.inverted(true);
-
-    // set PID coeffecients
-    flyWheelMotorConfig.closedLoop.p(ShooterConstants.FlyWheelPID.p)
-        .i(ShooterConstants.FlyWheelPID.i)
-        .d(ShooterConstants.FlyWheelPID.d)
-        .maxOutput(ShooterConstants.FlyWheelPID.maxOutput)
-        .minOutput(ShooterConstants.FlyWheelPID.minOutput);
-
-    flyWheelMotorConfig.closedLoop.feedForward
-        .kV(ShooterConstants.FlyWheelFF.v);
-
+    flyWheelMotorConfig
+        .idleMode(IdleMode.kCoast)
+        .inverted(true)
+        .closedLoop
+          .p(ShooterConstants.FlyWheelPID.p)
+          .i(ShooterConstants.FlyWheelPID.i)
+          .d(ShooterConstants.FlyWheelPID.d)
+          .maxOutput(ShooterConstants.FlyWheelPID.maxOutput)
+          .minOutput(ShooterConstants.FlyWheelPID.minOutput)
+            .feedForward
+            .kV(ShooterConstants.FlyWheelFF.v);
+    // @formatter:on
     flyWheelMotor.configure(flyWheelMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    final SparkMaxConfig indexerMotorConfig = new SparkMaxConfig();
+    indexerMotorConfig
+        .idleMode(IdleMode.kBrake)
+        .inverted(true);
     indexerMotor.configure(indexerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    final SparkFlexConfig disrupterMotorConfig = new SparkFlexConfig();
+    disrupterMotorConfig
+        .idleMode(IdleMode.kCoast)
+        .inverted(true);
     disrupterMotor.configure(disrupterMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     this.pidController = flyWheelMotor.getClosedLoopController();
