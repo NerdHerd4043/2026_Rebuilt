@@ -65,11 +65,9 @@ public class RobotContainer {
   public RobotContainer() {
     SignalLogger.enableAutoLogging(false);
 
-
-  //register pathplanner commands
-  NamedCommands.registerCommand("ShootOneBall", shooter.shootOneBall());
-  NamedCommands.registerCommand("AutoDropIntake", intake.autoDropIntake());
-
+    // register pathplanner commands
+    NamedCommands.registerCommand("ShootOneBall", shooter.shootOneBall());
+    NamedCommands.registerCommand("AutoDropIntake", intake.autoDropIntake());
 
     configureNamedCommands();
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -81,20 +79,21 @@ public class RobotContainer {
             () -> getScaledXY(),
             () -> scaleRotationAxis(driveStick.getRightX())));
 
-  // Define the stream URL. The default Limelight stream is at port 5800 with the stream.mjpg action.
-    // Replace "limelight" with your camera's name if you changed it in the web interface.
+    // Define the stream URL. The default Limelight stream is at port 5800 with the
+    // stream.mjpg action.
+    // Replace "limelight" with your camera's name if you changed it in the web
+    // interface.
     String limelightStreamUrl = "http://limelight.loc:5801";
 
     // Create an HttpCamera object
     HttpCamera limelightFeed = new HttpCamera("Limelight Camera", limelightStreamUrl);
 
-    // Start automatic capture. This puts the camera on the CameraServer, making it available to Shuffleboard.
+    // Start automatic capture. This puts the camera on the CameraServer, making it
+    // available to Shuffleboard.
     CameraServer.startAutomaticCapture(limelightFeed);
 
     configureBindings();
   }
-
-
 
   private double deadband(double input, double deadband) {
     if (Math.abs(input) < deadband) {
@@ -170,8 +169,6 @@ public class RobotContainer {
     return !beamBreak.get();
   }
 
-
-
   /**
    * Use this method to define your trigger->command mappings. Triggers can be
    * created via the
@@ -187,27 +184,37 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    //left trigger slows/spins up the flywheel
+    // left trigger slows/spins up the flywheel
 
     c_driveStick.rightTrigger().whileTrue(Commands.run(shooter::spinUpFlyWheel, shooter));
     c_driveStick.rightTrigger().whileFalse(Commands.run(shooter::slowFlyWheel, shooter));
+
     c_driveStick.leftTrigger().whileTrue(Commands.run(shooter::spinUpFlyWheelFast, shooter));
     c_driveStick.leftTrigger().whileFalse(Commands.run(shooter::spinUpFlyWheelFast, shooter));
-    //left bumper pushes indexer to feed balls into flywheel
+
+    // left bumper pushes indexer to feed balls into flywheel
     c_driveStick.rightBumper().whileTrue(shooter.feedBalls());
     c_driveStick.x().whileTrue(shooter.feedBalls());
-    //right trigger runs the intake
-    c_driveStick.leftBumper().whileTrue(intake.run(intake::intake));
-    c_driveStick.leftBumper().whileFalse(intake.run(intake::stopIntake));
-    c_driveStick.y().whileTrue(intake.run(intake::reveseIntake));
-    c_driveStick.y().whileFalse(intake.run(intake::stopIntake));
+
+    // right trigger runs the intake
+    c_driveStick
+        .leftBumper()
+        .whileTrue(intake.runEnd(intake::intake, intake::stopIntake));
+
+    c_driveStick
+        .y()
+        .whileTrue(intake.runEnd(intake::intake, intake::stopIntake));
+
+    // c_driveStick.y().whileTrue(intake.run(intake::reveseIntake));
+    // c_driveStick.y().onFalse(intake.run(intake::stopIntake));
+    //
     // //"a" button toggles the intake/outake. VERY EXPERIMENTAL
     // c_driveStick.a().onTrue(Commands.run(intake::toggleintake, intake));
 
     c_driveStick.a().whileTrue(intake.run(intake::setToIntakePos));
-    //c_driveStick.a().whileFalse(intake.run(intake::stopExpanedtion));
+    // c_driveStick.a().whileFalse(intake.run(intake::stopExpanedtion));
     c_driveStick.b().whileTrue(intake.run(intake::setToShootPos));
-    //c_driveStick.b().whileFalse(intake.run(intake::stopExpanedtion));
+    // c_driveStick.b().whileFalse(intake.run(intake::stopExpanedtion));
 
     c_driveStick.povUp().onTrue(Commands.runOnce(gyro::reset));
   }

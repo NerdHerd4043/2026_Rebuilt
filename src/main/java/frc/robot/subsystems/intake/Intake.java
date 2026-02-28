@@ -22,10 +22,13 @@ public class Intake extends SubsystemBase {
   private SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeMotorID, MotorType.kBrushless);
   private SparkFlex expansionMotor = new SparkFlex(IntakeConstants.expansionMotorID, MotorType.kBrushless);
 
-   private enum expansionPositions {INTAKE, SHOOTING, REST};
-   private expansionPositions expansionPosition = expansionPositions.REST;
+  private enum ExpansionPositions {
+    INTAKE, SHOOTING, REST
+  };
 
-  //init CANcoder for expansion motor
+  private ExpansionPositions expansionPosition = ExpansionPositions.REST;
+
+  // init CANcoder for expansion motor
   private CANcoder expansionCoder = new CANcoder(IntakeConstants.expansionEncoderID);
 
   public Intake() {
@@ -56,19 +59,19 @@ public class Intake extends SubsystemBase {
   }
 
   public void setToIntakePos() {
-    expansionPosition = expansionPositions.INTAKE;
+    expansionPosition = ExpansionPositions.INTAKE;
   }
 
   public void setToShootPos() {
-    expansionPosition = expansionPositions.SHOOTING;
+    expansionPosition = ExpansionPositions.SHOOTING;
   }
 
   public void stopExpanedtion() {
     expansionMotor.set(0);
   }
 
-//auto commands
-  public Command autoDropIntake(){
+  // auto commands
+  public Command autoDropIntake() {
 
     Command pullIntake = new RunCommand(this::setToShootPos).withTimeout(0.25);
     Command waitCommand = Commands.waitSeconds(0.5);
@@ -76,13 +79,11 @@ public class Intake extends SubsystemBase {
     return Commands.sequence(
         pullIntake,
         waitCommand,
-        dropIntake
-    );
+        dropIntake);
 
   }
 
-
-//expansion CANCoder functions
+  // expansion CANCoder functions
   public double getEncoder() {
     return expansionCoder.getAbsolutePosition().getValueAsDouble() * 360.0;
   }
@@ -91,28 +92,23 @@ public class Intake extends SubsystemBase {
     return Units.degreesToRadians(getEncoder());
   }
 
-  //ticking function
+  // ticking function
   @Override
   public void periodic() {
-    if (expansionPosition == expansionPositions.INTAKE) {
+    if (expansionPosition == ExpansionPositions.INTAKE) {
       if (getEncoderRadians() < IntakeConstants.intakePos) {
         expansionMotor.set(IntakeConstants.expansionSpeed);
-      }
-      else if (getEncoderRadians() > IntakeConstants.intakePos) {
+      } else if (getEncoderRadians() > IntakeConstants.intakePos) {
         expansionMotor.set(-IntakeConstants.expansionSpeed);
-      }
-      else {
+      } else {
         expansionMotor.stopMotor();
       }
-    }
-    else if (expansionPosition == expansionPositions.SHOOTING) {
+    } else if (expansionPosition == ExpansionPositions.SHOOTING) {
       if (getEncoderRadians() < IntakeConstants.shootPos) {
         expansionMotor.set(IntakeConstants.expansionSpeed);
-      }
-      else if (getEncoderRadians() > IntakeConstants.shootPos) {
+      } else if (getEncoderRadians() > IntakeConstants.shootPos) {
         expansionMotor.set(-IntakeConstants.expansionSpeed);
-      }
-      else {
+      } else {
         expansionMotor.stopMotor();
       }
     }

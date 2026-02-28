@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-
-
 @Logged
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -25,55 +23,53 @@ public class Robot extends TimedRobot {
     DriverStation.startDataLog(DataLogManager.getLog());
     Epilogue.bind(this);
 
+    // // Record metadata
+    // Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
+    // Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
+    // Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+    // Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
+    // Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
+    // Logger.recordMetadata(
+    // "GitDirty",
+    // switch (BuildConstants.DIRTY) {
+    // case 0 -> "All changes committed";
+    // case 1 -> "Uncommitted changes";
+    // default -> "Unknown";
+    // });
 
+    // // Set up data receivers & replay source
+    // switch (Constants.currentMode) {
+    // case REAL:
+    // // Running on a real robot, log to a USB stick ("/U/logs")
+    // Logger.addDataReceiver(new WPILOGWriter());
+    // Logger.addDataReceiver(new NT4Publisher());
+    // break;
 
+    // case SIM:
+    // // Running a physics simulator, log to NT
+    // Logger.addDataReceiver(new NT4Publisher());
+    // break;
 
-//  // Record metadata
-//     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
-//     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
-//     Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
-//     Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
-//     Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
-//     Logger.recordMetadata(
-//         "GitDirty",
-//         switch (BuildConstants.DIRTY) {
-//           case 0 -> "All changes committed";
-//           case 1 -> "Uncommitted changes";
-//           default -> "Unknown";
-//         });
+    // case REPLAY:
+    // // Replaying a log, set up replay source
+    // setUseTiming(false); // Run as fast as possible
+    // String logPath = LogFileUtil.findReplayLog();
+    // Logger.setReplaySource(new WPILOGReader(logPath));
+    // Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath,
+    // "_sim")));
+    // break;
+    // }
 
-//     // Set up data receivers & replay source
-//     switch (Constants.currentMode) {
-//       case REAL:
-//         // Running on a real robot, log to a USB stick ("/U/logs")
-//         Logger.addDataReceiver(new WPILOGWriter());
-//         Logger.addDataReceiver(new NT4Publisher());
-//         break;
+    // // Initialize URCL
+    // //Logger.registerURCL(URCL.startExternal()); //its erorring and failing to
+    // simulate -Michael
 
-//       case SIM:
-//         // Running a physics simulator, log to NT
-//         Logger.addDataReceiver(new NT4Publisher());
-//         break;
+    // StatusLogger.disableAutoLogging(); // Disable REVLib's built-in logging
 
-//       case REPLAY:
-//         // Replaying a log, set up replay source
-//         setUseTiming(false); // Run as fast as possible
-//         String logPath = LogFileUtil.findReplayLog();
-//         Logger.setReplaySource(new WPILOGReader(logPath));
-//         Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
-//         break;
-//     }
+    // // Start AdvantageKit logger
+    // Logger.start();
 
-//     // Initialize URCL
-//     //Logger.registerURCL(URCL.startExternal()); //its erorring and failing to simulate -Michael
-
-//     StatusLogger.disableAutoLogging(); // Disable REVLib's built-in logging
-
-//     // Start AdvantageKit logger
-//     Logger.start();
-
-
-    //INSTANCE IT
+    // INSTANCE IT
     m_robotContainer = new RobotContainer();
   }
 
@@ -83,13 +79,16 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   @Override
-  public void disabledExit() {}
+  public void disabledExit() {
+  }
 
   @Override
   public void autonomousInit() {
@@ -101,10 +100,12 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
-  public void autonomousExit() {}
+  public void autonomousExit() {
+  }
 
   @Override
   public void teleopInit() {
@@ -114,10 +115,12 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  }
 
   @Override
-  public void teleopExit() {}
+  public void teleopExit() {
+  }
 
   @Override
   public void testInit() {
@@ -125,8 +128,10 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 
   @Override
-  public void testExit() {}
+  public void testExit() {
+  }
 }

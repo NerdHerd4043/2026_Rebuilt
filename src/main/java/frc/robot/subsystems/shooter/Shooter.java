@@ -46,13 +46,13 @@ public class Shooter extends SubsystemBase {
 
     // set PID coeffecients
     flyWheelMotorConfig.closedLoop.p(ShooterConstants.FlyWheelPID.p)
-      .i(ShooterConstants.FlyWheelPID.i)
-      .d(ShooterConstants.FlyWheelPID.d)
-      .maxOutput(ShooterConstants.FlyWheelPID.maxOutput)
-      .minOutput(ShooterConstants.FlyWheelPID.minOutput);
+        .i(ShooterConstants.FlyWheelPID.i)
+        .d(ShooterConstants.FlyWheelPID.d)
+        .maxOutput(ShooterConstants.FlyWheelPID.maxOutput)
+        .minOutput(ShooterConstants.FlyWheelPID.minOutput);
 
     flyWheelMotorConfig.closedLoop.feedForward
-      .kV(ShooterConstants.FlyWheelFF.v);
+        .kV(ShooterConstants.FlyWheelFF.v);
 
     flyWheelMotor.configure(flyWheelMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     indexerMotor.configure(indexerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -79,36 +79,42 @@ public class Shooter extends SubsystemBase {
   }
 
   // public void stopFlyWheel() {
-  //   this.stoped = true;
-  //   this.pidController.setSetpoint(0, ControlType.kVelocity);
+  // this.stoped = true;
+  // this.pidController.setSetpoint(0, ControlType.kVelocity);
   // }
 
-  public Command shootOneBall(){
+  public Command shootOneBall() {
 
-    Command runFlywheel = new RunCommand(this::spinUpFlyWheel).withTimeout(4);
+    Command runFlywheel = this.run(this::spinUpFlyWheel).withTimeout(4);
     Command waitCommand = Commands.waitSeconds(0.2);
     Command runShooter = feedBalls();
     return Commands.sequence(
         runFlywheel,
         waitCommand,
-        runShooter
-    );
+        runShooter);
 
   }
 
-
   public Command feedBalls() {
-    return this.run(() -> {{ indexerMotor.set(ShooterConstants.indexerFeedSpeed); disrupterMotor.set(ShooterConstants.disrupterSpeed); }})
-      .finallyDo(() -> { indexerMotor.stopMotor(); disrupterMotor.stopMotor(); });
+    return this.runEnd(() -> {
+      indexerMotor.set(ShooterConstants.indexerFeedSpeed);
+      disrupterMotor.set(ShooterConstants.disrupterSpeed);
+    }, () -> {
+      indexerMotor.stopMotor();
+      disrupterMotor.stopMotor();
+    });
   }
 
   public Command reverseIndexer() {
-    return this.run(() -> {if (!this.pidController.isAtSetpoint()) { indexerMotor.set(-ShooterConstants.indexerFeedSpeed); }})
-      .finallyDo(() -> indexerMotor.stopMotor());
+    return this.runEnd(() -> {
+      if (!this.pidController.isAtSetpoint()) {
+        indexerMotor.set(-ShooterConstants.indexerFeedSpeed);
+      }
+    }, () -> indexerMotor.stopMotor());
   }
 
   public void periodic() {
-    //SmartDashboard stuff
+    // SmartDashboard stuff
     SmartDashboard.putNumber("Flywheel speed (rpm)", this.encoder.getVelocity());
     SmartDashboard.putBoolean("Flywheel is at velocity setpoint", this.pidController.isAtSetpoint());
     SmartDashboard.putBoolean("Flywheel is stoped", this.stoped);
