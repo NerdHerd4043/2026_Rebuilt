@@ -21,7 +21,6 @@ import com.studica.frc.AHRS.NavXComType;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -51,8 +50,6 @@ public class RobotContainer {
 
   // private final CANdleSystem candle = new CANdleSystem();
 
-  private static XboxController driveStick = new XboxController(0);
-
   // private static CommandXboxController c_driveStick2 = new
   // CommandXboxController(1);
   private static CommandXboxController c_driveStick = new CommandXboxController(0);
@@ -77,7 +74,7 @@ public class RobotContainer {
     drivebase.setDefaultCommand(
         new Drive(drivebase,
             () -> getScaledXY(),
-            () -> scaleRotationAxis(driveStick.getRightX())));
+            () -> scaleRotationAxis(c_driveStick.getRightX())));
 
     // Define the stream URL. The default Limelight stream is at port 5800 with the
     // stream.mjpg action.
@@ -105,8 +102,8 @@ public class RobotContainer {
 
   private double[] getXY() {
     double[] xy = new double[2];
-    xy[0] = deadband(driveStick.getLeftX(), DriveConstants.deadband);
-    xy[1] = deadband(driveStick.getLeftY(), DriveConstants.deadband);
+    xy[0] = deadband(c_driveStick.getLeftX(), DriveConstants.deadband);
+    xy[1] = deadband(c_driveStick.getLeftY(), DriveConstants.deadband);
     return xy;
   }
 
