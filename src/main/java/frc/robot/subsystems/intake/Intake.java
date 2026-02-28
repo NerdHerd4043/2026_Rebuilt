@@ -115,6 +115,8 @@ public class Intake extends SubsystemBase {
     }, this.expansionMotor::stopMotor);
   }
 
+  public Command intakeCommand = Commands.runEnd(() -> intake(), ()-> stopIntake());
+
   // ticking function
   @Override
   public void periodic() {

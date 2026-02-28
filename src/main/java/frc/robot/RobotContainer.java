@@ -65,6 +65,9 @@ public class RobotContainer {
     // register pathplanner commands
     NamedCommands.registerCommand("ShootOneBall", shooter.shootOneBall());
     NamedCommands.registerCommand("AutoDropIntake", intake.autoDropIntake());
+    NamedCommands.registerCommand("RunIntake", intake.intakeCommand);
+    NamedCommands.registerCommand("ShootAndFeed", shooter.ShootAndFeed);
+
 
     configureNamedCommands();
     autoChooser = AutoBuilder.buildAutoChooser();

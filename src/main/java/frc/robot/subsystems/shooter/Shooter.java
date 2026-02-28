@@ -104,6 +104,9 @@ public class Shooter extends SubsystemBase {
     });
   }
 
+
+  public Command ShootAndFeed = Commands.parallel(feedBalls(),spinUpFlywheel(ShooterConstants.highSetPoint));
+
   public Command reverseIndexer() {
     return this.runEnd(() -> {
       if (!this.pidController.isAtSetpoint()) {

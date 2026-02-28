@@ -7,7 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "left_back_toshoot"
+            "pathName": "left_bridge_collection_toshoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootAndFeed"
           }
         }
       ]
