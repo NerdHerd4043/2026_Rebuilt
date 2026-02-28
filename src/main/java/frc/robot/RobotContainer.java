@@ -63,11 +63,11 @@ public class RobotContainer {
     SignalLogger.enableAutoLogging(false);
 
     // register pathplanner commands
+    NamedCommands.registerCommand("StopFlyWheel", shooter.stopFlywheel());
     NamedCommands.registerCommand("ShootOneBall", shooter.shootOneBall());
     NamedCommands.registerCommand("AutoDropIntake", intake.autoDropIntake());
     NamedCommands.registerCommand("RunIntake", intake.intakeCommand);
     NamedCommands.registerCommand("ShootAndFeed", shooter.ShootAndFeed);
-
 
     configureNamedCommands();
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -192,14 +192,14 @@ public class RobotContainer {
     c_driveStick.rightTrigger().onFalse(shooter.stopFlywheel());
 
     c_driveStick.leftTrigger().whileTrue(Commands.parallel(
-      intake.raiseExpansion(), intakeCommand));
+        intake.raiseExpansion(), intakeCommand));
 
     // left bumper pushes indexer to feed balls into flywheel
     c_driveStick.rightBumper().whileTrue(shooter.feedBalls());
 
     // right trigger runs the intake
     c_driveStick.leftBumper().whileTrue(Commands.parallel(
-      intake.lowerExpansion(), intakeCommand));
+        intake.lowerExpansion(), intakeCommand));
 
     c_driveStick.povUp().onTrue(Commands.runOnce(gyro::reset));
 

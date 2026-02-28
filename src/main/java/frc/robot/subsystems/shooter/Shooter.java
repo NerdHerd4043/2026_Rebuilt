@@ -85,7 +85,7 @@ public class Shooter extends SubsystemBase {
   public Command shootOneBall() {
 
     Command runFlywheel = this.flywheelSlow();
-    Command waitCommand = Commands.waitSeconds(4.2);
+    Command waitCommand = Commands.waitSeconds(1.5);
     Command runShooter = feedBalls();
     return Commands.sequence(
         runFlywheel,
