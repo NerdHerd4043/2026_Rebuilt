@@ -67,7 +67,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("ShootOneBall", shooter.shootOneBall());
     NamedCommands.registerCommand("AutoDropIntake", intake.autoDropIntake());
     NamedCommands.registerCommand("RunIntake", intake.intakeCommand);
-    NamedCommands.registerCommand("ShootAndFeed", shooter.ShootAndFeed);
+    NamedCommands.registerCommand("Feed", shooter.Feed);
+    NamedCommands.registerCommand("Shoot", shooter.Shoot);
 
     configureNamedCommands();
     autoChooser = AutoBuilder.buildAutoChooser();

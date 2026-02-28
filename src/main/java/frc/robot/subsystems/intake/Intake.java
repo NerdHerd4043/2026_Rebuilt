@@ -104,7 +104,9 @@ public class Intake extends SubsystemBase {
         this.moveExpansionUp();
         this.intake();
       }
-    }, this.stopMotors());
+    }, () -> {
+      this.stopMotors();
+    });
   }
 
   public Command lowerExpansion() {
@@ -113,14 +115,14 @@ public class Intake extends SubsystemBase {
         this.moveExpansionDown();
         this.intake();
       }
-    }, this.stopMotors());
+    }, () -> {
+      this.stopMotors();
+    });
   }
 
-  public Runnable stopMotors() {
-    return (Runnable) this.run(() -> {
-      this.expansionMotor.stopMotor();
-      this.intakeMotor.stopMotor();
-    });
+  public void stopMotors() {
+    this.expansionMotor.stopMotor();
+    this.intakeMotor.stopMotor();
   }
 
   public Command intakeCommand = Commands.runEnd(() -> intake(), () -> stopIntake());

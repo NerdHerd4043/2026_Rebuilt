@@ -104,8 +104,8 @@ public class Shooter extends SubsystemBase {
     });
   }
 
-
-  public Command ShootAndFeed = Commands.parallel(feedBalls(),spinUpFlywheel(ShooterConstants.highSetPoint));
+  public Command Feed = feedBalls();
+  public Command Shoot = spinUpFlywheel(ShooterConstants.lowSetPoint);
 
   public Command reverseIndexer() {
     return this.runEnd(() -> {
