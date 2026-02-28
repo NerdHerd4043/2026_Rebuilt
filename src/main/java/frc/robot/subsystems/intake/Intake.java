@@ -10,10 +10,9 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.ctre.phoenix6.hardware.CANcoder;
 
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.epilogue.Logged;
 
@@ -23,7 +22,7 @@ public class Intake extends SubsystemBase {
   private SparkFlex expansionMotor = new SparkFlex(IntakeConstants.expansionMotorID, MotorType.kBrushless);
 
   public enum ExpansionPositions {
-    INTAKE, SHOOTING, REST
+    REST, EXTENDED
   };
 
   private ExpansionPositions expansionPosition = ExpansionPositions.REST;
@@ -58,63 +57,86 @@ public class Intake extends SubsystemBase {
     intakeMotor.stopMotor();
   }
 
-  public void setToIntakePos() {
-    expansionPosition = ExpansionPositions.INTAKE;
-  }
-
-  public void setToShootPos() {
-    expansionPosition = ExpansionPositions.SHOOTING;
-  }
-
   public void stopExpansion() {
     expansionMotor.set(0);
   }
 
   // auto commands
+  // TODO: fix timings?
   public Command autoDropIntake() {
-
-    Command pullIntake = new RunCommand(this::setToShootPos).withTimeout(0.25);
+    Command pullIntake = this.runEnd(this::moveExpansionUp, this.expansionMotor::stopMotor).withTimeout(0.25);
     Command waitCommand = Commands.waitSeconds(0.5);
-    Command dropIntake = new RunCommand(this::setToIntakePos).withTimeout(5.25);
-    return Commands.sequence(
+    Command dropIntake = this.runEnd(this::moveExpansionDown, this.expansionMotor::stopMotor).withTimeout(5.25);
+    Command autoDrop = Commands.sequence(
+        this.runOnce(() -> {
+          this.expansionPosition = ExpansionPositions.EXTENDED;
+        }),
         pullIntake,
         waitCommand,
         dropIntake);
 
+    return Commands.either(
+        autoDrop,
+        Commands.none(),
+        () -> this.expansionPosition != ExpansionPositions.EXTENDED);
   }
 
   // expansion CANCoder functions
   public double getEncoder() {
-    return expansionCoder.getAbsolutePosition().getValueAsDouble() * 360.0;
+    return expansionCoder.getAbsolutePosition().getValue().in(Units.Degrees);
   }
 
   public double getEncoderRadians() {
-    return Units.degreesToRadians(getEncoder());
+    return expansionCoder.getAbsolutePosition().getValue().in(Units.Radians);
+  }
+
+  private void moveExpansionUp() {
+    this.expansionMotor.set(-IntakeConstants.expansionSpeed);
+  }
+
+  private void moveExpansionDown() {
+    this.expansionMotor.set(IntakeConstants.expansionSpeed);
+  }
+
+  public Command raiseExpansion() {
+    return this.runEnd(() -> {
+      if (this.getEncoderRadians() > IntakeConstants.shootPos) {
+        this.moveExpansionUp();
+      }
+    }, this.expansionMotor::stopMotor);
+  }
+
+  public Command lowerExpansion() {
+    return this.runEnd(() -> {
+      if (this.getEncoderRadians() < IntakeConstants.intakePos) {
+        this.moveExpansionDown();
+      }
+    }, this.expansionMotor::stopMotor);
   }
 
   // ticking function
   @Override
   public void periodic() {
-    switch (expansionPosition) {
-      case INTAKE:
-        if (getEncoderRadians() < IntakeConstants.intakePos) {
-          expansionMotor.set(IntakeConstants.expansionSpeed);
-        } else if (getEncoderRadians() > IntakeConstants.intakePos) {
-          expansionMotor.set(-IntakeConstants.expansionSpeed);
-        } else {
-          expansionMotor.stopMotor();
-        }
-        break;
-      case SHOOTING:
-        if (getEncoderRadians() < IntakeConstants.shootPos) {
-          expansionMotor.set(IntakeConstants.expansionSpeed);
-        } else if (getEncoderRadians() > IntakeConstants.shootPos) {
-          expansionMotor.set(-IntakeConstants.expansionSpeed);
-        } else {
-          expansionMotor.stopMotor();
-        }
-        break;
-      default:
-    }
+    // switch (expansionPosition) {
+    // case INTAKE:
+    // if (getEncoderRadians() < IntakeConstants.intakePos) {
+    // expansionMotor.set(IntakeConstants.expansionSpeed);
+    // } else if (getEncoderRadians() > IntakeConstants.intakePos) {
+    // expansionMotor.set(-IntakeConstants.expansionSpeed);
+    // } else {
+    // expansionMotor.stopMotor();
+    // }
+    // break;
+    // case SHOOTING:
+    // if (getEncoderRadians() < IntakeConstants.shootPos) {
+    // expansionMotor.set(IntakeConstants.expansionSpeed);
+    // } else if (getEncoderRadians() > IntakeConstants.shootPos) {
+    // expansionMotor.set(-IntakeConstants.expansionSpeed);
+    // } else {
+    // expansionMotor.stopMotor();
+    // }
+    // break;
+    // default:
+    // }
   }
 }

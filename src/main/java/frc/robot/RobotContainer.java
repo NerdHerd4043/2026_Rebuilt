@@ -189,31 +189,27 @@ public class RobotContainer {
     c_driveStick.rightTrigger().onTrue(shooter.flywheelSlow());
     c_driveStick.rightTrigger().onFalse(shooter.stopFlywheel());
 
-    c_driveStick.leftTrigger().onTrue(shooter.flywheelFast());
-    c_driveStick.leftTrigger().onFalse(shooter.stopFlywheel());
+    c_driveStick.leftTrigger().whileTrue(intake.raiseExpansion());
 
     // left bumper pushes indexer to feed balls into flywheel
     c_driveStick.rightBumper().whileTrue(shooter.feedBalls());
     c_driveStick.x().whileTrue(shooter.feedBalls());
 
+    Command intakeCommand = intake.runEnd(intake::intake, intake::stopIntake)
+        .alongWith(intake.lowerExpansion());
+
     // right trigger runs the intake
     c_driveStick
         .leftBumper()
-        .whileTrue(intake.runEnd(intake::intake, intake::stopIntake));
+        .whileTrue(intakeCommand);
 
     c_driveStick
         .y()
-        .whileTrue(intake.runEnd(intake::intake, intake::stopIntake));
-
-    // //"a" button toggles the intake/outake. VERY EXPERIMENTAL
-    // c_driveStick.a().onTrue(Commands.run(intake::toggleintake, intake));
-
-    c_driveStick.a().whileTrue(intake.run(intake::setToIntakePos));
-    // c_driveStick.a().whileFalse(intake.run(intake::stopExpanedtion));
-    c_driveStick.b().whileTrue(intake.run(intake::setToShootPos));
-    // c_driveStick.b().whileFalse(intake.run(intake::stopExpanedtion));
+        .whileTrue(intakeCommand);
 
     c_driveStick.povUp().onTrue(Commands.runOnce(gyro::reset));
+
+    c_driveStick.povDown().onTrue(intake.autoDropIntake());
   }
 
   private void configureNamedCommands() {
