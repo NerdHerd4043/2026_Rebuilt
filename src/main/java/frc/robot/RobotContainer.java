@@ -184,22 +184,18 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    Command intakeCommand = intake.runEnd(intake::intake, intake::stopIntake);
-
     // left trigger slows/spins up the flywheel
 
     c_driveStick.rightTrigger().onTrue(shooter.flywheelSlow());
     c_driveStick.rightTrigger().onFalse(shooter.stopFlywheel());
 
-    c_driveStick.leftTrigger().whileTrue(Commands.parallel(
-        intake.raiseExpansion(), intakeCommand));
+    c_driveStick.leftTrigger().whileTrue(intake.raiseExpansion());
 
     // left bumper pushes indexer to feed balls into flywheel
     c_driveStick.rightBumper().whileTrue(shooter.feedBalls());
 
     // right trigger runs the intake
-    c_driveStick.leftBumper().whileTrue(Commands.parallel(
-        intake.lowerExpansion(), intakeCommand));
+    c_driveStick.leftBumper().whileTrue(intake.lowerExpansion());
 
     c_driveStick.povUp().onTrue(Commands.runOnce(gyro::reset));
 
