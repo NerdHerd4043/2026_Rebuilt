@@ -95,22 +95,26 @@ public class Intake extends SubsystemBase {
   // ticking function
   @Override
   public void periodic() {
-    if (expansionPosition == ExpansionPositions.INTAKE) {
-      if (getEncoderRadians() < IntakeConstants.intakePos) {
-        expansionMotor.set(IntakeConstants.expansionSpeed);
-      } else if (getEncoderRadians() > IntakeConstants.intakePos) {
-        expansionMotor.set(-IntakeConstants.expansionSpeed);
-      } else {
-        expansionMotor.stopMotor();
-      }
-    } else if (expansionPosition == ExpansionPositions.SHOOTING) {
-      if (getEncoderRadians() < IntakeConstants.shootPos) {
-        expansionMotor.set(IntakeConstants.expansionSpeed);
-      } else if (getEncoderRadians() > IntakeConstants.shootPos) {
-        expansionMotor.set(-IntakeConstants.expansionSpeed);
-      } else {
-        expansionMotor.stopMotor();
-      }
+    switch (expansionPosition) {
+      case INTAKE:
+        if (getEncoderRadians() < IntakeConstants.intakePos) {
+          expansionMotor.set(IntakeConstants.expansionSpeed);
+        } else if (getEncoderRadians() > IntakeConstants.intakePos) {
+          expansionMotor.set(-IntakeConstants.expansionSpeed);
+        } else {
+          expansionMotor.stopMotor();
+        }
+        break;
+      case SHOOTING:
+        if (getEncoderRadians() < IntakeConstants.shootPos) {
+          expansionMotor.set(IntakeConstants.expansionSpeed);
+        } else if (getEncoderRadians() > IntakeConstants.shootPos) {
+          expansionMotor.set(-IntakeConstants.expansionSpeed);
+        } else {
+          expansionMotor.stopMotor();
+        }
+        break;
+      default:
     }
   }
 }
