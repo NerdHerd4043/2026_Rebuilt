@@ -22,5 +22,7 @@ public class SparkBaseLogger extends ClassSpecificLogger<SparkBase> {
     backend.log("Applied Output (Duty Cycle)", motor.getAppliedOutput());
     backend.log("Output Current (A)", motor.getOutputCurrent());
     backend.log("Temperature (C)", motor.getMotorTemperature());
+    backend.log("Motor Type", motor.getMotorType());
+    backend.log("Velocity (RPM)", motor.getEncoder().getVelocity());
   }
 }
