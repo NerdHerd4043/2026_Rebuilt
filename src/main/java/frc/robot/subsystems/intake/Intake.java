@@ -102,8 +102,8 @@ public class Intake extends SubsystemBase {
     return this.runEnd(() -> {
       if (this.getEncoderRadians() > IntakeConstants.shootPos) {
         this.moveExpansionUp();
-        this.intake();
       }
+      this.intake();
     }, () -> {
       this.stopMotors();
     });
@@ -112,9 +112,9 @@ public class Intake extends SubsystemBase {
   public Command lowerExpansion() {
     return this.runEnd(() -> {
       if (this.getEncoderRadians() < IntakeConstants.intakePos) {
-        // this.moveExpansionDown();
-        this.intake();
+        this.moveExpansionDown();
       }
+      this.intake();
     }, () -> {
       this.stopMotors();
     });
