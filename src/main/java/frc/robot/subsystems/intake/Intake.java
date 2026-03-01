@@ -112,7 +112,7 @@ public class Intake extends SubsystemBase {
   public Command lowerExpansion() {
     return this.runEnd(() -> {
       if (this.getEncoderRadians() < IntakeConstants.intakePos) {
-        this.moveExpansionDown();
+        // this.moveExpansionDown();
         this.intake();
       }
     }, () -> {
