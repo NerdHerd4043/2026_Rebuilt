@@ -12,6 +12,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -119,5 +120,10 @@ public class Shooter extends SubsystemBase {
     // SmartDashboard stuff
     SmartDashboard.putNumber("Flywheel speed (rpm)", this.encoder.getVelocity());
     SmartDashboard.putBoolean("Flywheel is at velocity setpoint", this.pidController.isAtSetpoint());
+    if (this.encoder.getVelocity() == 2600) {
+      SmartDashboard.putBoolean("Flywheel is at velocity setpoint", true);
+    } else {
+      SmartDashboard.putBoolean("Flywheel is at velocity setpoint", false);
+    }
   }
 }
