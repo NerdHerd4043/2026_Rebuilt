@@ -58,14 +58,15 @@ public class Intake extends SubsystemBase {
   }
 
   public void stopExpansion() {
-    expansionMotor.set(0);
+    expansionMotor.stopMotor();
   }
 
   // auto commands
   // TODO: fix timings?
   public Command autoDropIntake() {
-    Command pullIntake = this.runEnd(this::moveExpansionUp, this.expansionMotor::stopMotor).withTimeout(0.1);
-    Command waitCommand = Commands.waitSeconds(0.5);
+    expansionPosition = ExpansionPositions.REST;
+    Command pullIntake = this.runEnd(this::moveExpansionUp, this.expansionMotor::stopMotor).withTimeout(0.3);
+    Command waitCommand = Commands.waitSeconds(0.3);
     Command dropIntake = this.runEnd(this::moveExpansionDown, this.expansionMotor::stopMotor).withTimeout(0.25);
     Command autoDrop = Commands.sequence(
         this.runOnce(() -> {
@@ -103,9 +104,8 @@ public class Intake extends SubsystemBase {
       if (this.getEncoderRadians() > IntakeConstants.shootPos) {
         this.moveExpansionUp();
       }
-      // this.intake();
     }, () -> {
-      this.stopMotors();
+      this.expansionMotor.stopMotor();
     });
   }
 
@@ -114,18 +114,17 @@ public class Intake extends SubsystemBase {
       if (this.getEncoderRadians() < IntakeConstants.intakePos) {
         this.moveExpansionDown();
       }
-      this.intake();
     }, () -> {
-      this.stopMotors();
+      this.expansionMotor.stopMotor();
     });
   }
 
-  public void stopMotors() {
-    this.expansionMotor.stopMotor();
-    this.intakeMotor.stopMotor();
-  }
-
-  public Command intakeCommand = Commands.runEnd(() -> intake(), () -> stopIntake());
+  public Command intakeCommand = Commands.runEnd(() -> {
+    this.intake();
+    this.lowerExpansion();
+  }, () -> {
+    stopIntake();
+  });
 
   // ticking function
   @Override

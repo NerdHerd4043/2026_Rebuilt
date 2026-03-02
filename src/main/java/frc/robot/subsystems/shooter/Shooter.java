@@ -94,6 +94,10 @@ public class Shooter extends SubsystemBase {
 
   }
 
+  // public Command ShootAndFeed() {
+  // return Commands.parallel(Shoot, Feed);
+  // }
+
   public Command feedBalls() {
     return this.runEnd(() -> {
       indexerMotor.set(ShooterConstants.indexerFeedSpeed);
@@ -119,5 +123,10 @@ public class Shooter extends SubsystemBase {
     // SmartDashboard stuff
     SmartDashboard.putNumber("Flywheel speed (rpm)", this.encoder.getVelocity());
     SmartDashboard.putBoolean("Flywheel is at velocity setpoint", this.pidController.isAtSetpoint());
+    if (this.encoder.getVelocity() == 2600) {
+      SmartDashboard.putBoolean("Flywheel is at velocity setpoint", true);
+    } else {
+      SmartDashboard.putBoolean("Flywheel is at velocity setpoint", false);
+    }
   }
 }

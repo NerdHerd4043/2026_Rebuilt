@@ -9,6 +9,7 @@ import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -23,6 +24,13 @@ public class Robot extends TimedRobot {
     DriverStation.startDataLog(DataLogManager.getLog());
     Epilogue.bind(this);
 
+    SmartDashboard.putString("ProjectName", BuildConstants.MAVEN_NAME);
+    SmartDashboard.putString("BuildDate", BuildConstants.BUILD_DATE);
+    SmartDashboard.putString("GitSHA", BuildConstants.GIT_SHA);
+    SmartDashboard.putString("GitDate", BuildConstants.GIT_DATE);
+    SmartDashboard.putString("GitBranch", BuildConstants.GIT_BRANCH);
+    boolean dirty = BuildConstants.DIRTY == 0 ? false : true;
+    SmartDashboard.putBoolean("GitDirty", dirty);
     // // Record metadata
     // Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     // Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);

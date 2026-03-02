@@ -69,6 +69,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("RunIntake", intake.intakeCommand);
     NamedCommands.registerCommand("Feed", shooter.Feed);
     NamedCommands.registerCommand("Shoot", shooter.Shoot);
+    // NamedCommands.registerCommand("ShootAndFeed", shooter.ShootAndFeed());
 
     configureNamedCommands();
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -196,11 +197,13 @@ public class RobotContainer {
     c_driveStick.rightBumper().whileTrue(shooter.feedBalls());
 
     // right trigger runs the intake
-    c_driveStick.leftBumper().whileTrue(intake.lowerExpansion());
+    c_driveStick.leftBumper().whileTrue(intake.intakeCommand);
 
     c_driveStick.povUp().onTrue(Commands.runOnce(gyro::reset));
 
     c_driveStick.povDown().onTrue(intake.autoDropIntake());
+
+    c_driveStick.povLeft().onTrue(intake.autoDropIntake());
   }
 
   private void configureNamedCommands() {
