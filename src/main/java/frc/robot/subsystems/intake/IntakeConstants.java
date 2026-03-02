@@ -13,7 +13,7 @@ public class IntakeConstants {
   // TODO: remeasure intakePos
   public static final double intakePos = 0.28;
   // TODO: measure shootPos
-  public static final double shootPos = 0.27;
+  public static final double shootPos = 0.16;
   public static final double restPos = 0;
 
   public static final class ExpansionPID {

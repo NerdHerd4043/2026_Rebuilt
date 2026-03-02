@@ -103,7 +103,7 @@ public class Intake extends SubsystemBase {
       if (this.getEncoderRadians() > IntakeConstants.shootPos) {
         this.moveExpansionUp();
       }
-      this.intake();
+      // this.intake();
     }, () -> {
       this.stopMotors();
     });
