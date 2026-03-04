@@ -196,7 +196,7 @@ public class RobotContainer {
     c_driveStick.rightBumper().whileTrue(shooter.feedBalls());
 
     // right trigger runs the intake
-    c_driveStick.leftBumper().whileTrue(intake.lowerExpansion());
+    c_driveStick.leftBumper().whileTrue(intake.intakeCommand);
 
     c_driveStick.povUp().onTrue(Commands.runOnce(gyro::reset));
 
