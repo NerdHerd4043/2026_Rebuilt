@@ -46,8 +46,8 @@ public class RobotContainer {
   private final DigitalInput beamBreak = new DigitalInput(0);
 
   private final Drivebase drivebase = new Drivebase();
-  private final Shooter shooter = new Shooter();
-  private final Intake intake = new Intake();
+  public final Shooter shooter = new Shooter();
+  public final Intake intake = new Intake();
 
   // private final CANdleSystem candle = new CANdleSystem();
 
@@ -204,6 +204,7 @@ public class RobotContainer {
     c_driveStick.povUp().onTrue(Commands.runOnce(gyro::reset));
 
     c_driveStick.povDown().onTrue(intake.autoDropIntake());
+
   }
 
   private void configureNamedCommands() {

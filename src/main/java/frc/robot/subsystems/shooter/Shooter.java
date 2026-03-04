@@ -82,6 +82,7 @@ public class Shooter extends SubsystemBase {
     });
   }
 
+  // shoots 8 balls
   public Command shootOneBall() {
 
     Command runFlywheel = this.flywheelSlow();
@@ -91,7 +92,6 @@ public class Shooter extends SubsystemBase {
         runFlywheel,
         waitCommand,
         runShooter);
-
   }
 
   // public Command ShootAndFeed() {
