@@ -87,12 +87,10 @@ public class Shooter extends SubsystemBase {
     Command runFlywheel = this.flywheelSlow();
     Command waitCommand = Commands.waitSeconds(1.5);
     Command runShooter = feedBalls();
-    Command stopFlywheel = this.stopFlywheel();
     return Commands.sequence(
         runFlywheel,
         waitCommand,
-        runShooter,
-        stopFlywheel);
+        runShooter);
 
   }
 
