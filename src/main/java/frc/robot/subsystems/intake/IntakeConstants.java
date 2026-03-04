@@ -8,7 +8,7 @@ public class IntakeConstants {
 
   public static final double intakeSpeed = 0.70;
 
-  public static final double expansionSpeed = 0.1;
+  public static final double expansionSpeed = 0.3;
 
   // TODO: remeasure intakePos
   public static final double intakePos = 0.28;
