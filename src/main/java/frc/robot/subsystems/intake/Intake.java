@@ -58,7 +58,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void stopExpansion() {
-    expansionMotor.set(0);
+    expansionMotor.stopMotor();
   }
 
   // auto commands
@@ -104,7 +104,6 @@ public class Intake extends SubsystemBase {
       if (this.getEncoderRadians() > IntakeConstants.shootPos) {
         this.moveExpansionUp();
       }
-      // this.intake();
     }, () -> {
       this.expansionMotor.stopMotor();
     });
@@ -112,21 +111,20 @@ public class Intake extends SubsystemBase {
 
   public Command lowerExpansion() {
     return this.runEnd(() -> {
-      // if (this.getEncoderRadians() < IntakeConstants.intakePos) {
-      // this.moveExpansionDown();
-      // }
-      this.intake();
+      if (this.getEncoderRadians() < IntakeConstants.intakePos) {
+        this.moveExpansionDown();
+      }
     }, () -> {
-      this.intakeMotor.stopMotor();
+      this.expansionMotor.stopMotor();
     });
   }
 
-  public void stopMotors() {
-    this.expansionMotor.stopMotor();
-    this.intakeMotor.stopMotor();
-  }
-
-  public Command intakeCommand = Commands.runEnd(() -> intake(), () -> stopIntake());
+  public Command intakeCommand = Commands.runEnd(() -> {
+    this.intake();
+    this.lowerExpansion();
+  }, () -> {
+    stopIntake();
+  });
 
   // ticking function
   @Override
