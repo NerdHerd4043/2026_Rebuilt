@@ -76,7 +76,10 @@ public class Intake extends SubsystemBase {
         waitCommand,
         dropIntake);
 
-    return autoDrop;
+    return Commands.either(
+        autoDrop,
+        Commands.none(),
+        () -> this.expansionPosition != ExpansionPositions.EXTENDED);
   }
 
   // expansion CANCoder functions
