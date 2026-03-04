@@ -204,8 +204,6 @@ public class RobotContainer {
     c_driveStick.povUp().onTrue(Commands.runOnce(gyro::reset));
 
     c_driveStick.povDown().onTrue(intake.autoDropIntake());
-
-    c_driveStick.povLeft().onTrue(intake.autoDropIntake());
   }
 
   private void configureNamedCommands() {

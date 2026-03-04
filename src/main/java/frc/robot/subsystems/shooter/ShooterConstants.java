@@ -1,7 +1,6 @@
 package frc.robot.subsystems.shooter;
 
 public class ShooterConstants {
-
   public static final int flyWheelMotorID = 31;
   public static final int indexerMotorID = 32;
   public static final int disrupterMotorID = 35;
