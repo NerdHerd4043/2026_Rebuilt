@@ -105,18 +105,18 @@ public class Intake extends SubsystemBase {
       }
       // this.intake();
     }, () -> {
-      this.stopMotors();
+      this.expansionMotor.stopMotor();
     });
   }
 
   public Command lowerExpansion() {
     return this.runEnd(() -> {
-      if (this.getEncoderRadians() < IntakeConstants.intakePos) {
-        this.moveExpansionDown();
-      }
+      // if (this.getEncoderRadians() < IntakeConstants.intakePos) {
+      // this.moveExpansionDown();
+      // }
       this.intake();
     }, () -> {
-      this.stopMotors();
+      this.intakeMotor.stopMotor();
     });
   }
 
