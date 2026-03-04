@@ -94,6 +94,10 @@ public class Shooter extends SubsystemBase {
 
   }
 
+  public Command ShootAndFeed() {
+    return Commands.parallel(Shoot, Feed);
+  }
+
   public Command feedBalls() {
     return this.runEnd(() -> {
       indexerMotor.set(ShooterConstants.indexerFeedSpeed);
