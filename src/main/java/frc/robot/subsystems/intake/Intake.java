@@ -65,9 +65,8 @@ public class Intake extends SubsystemBase {
   // auto commands
   // TODO: fix timings?
   public Command autoDropIntake() {
-    expansionPosition = ExpansionPositions.REST;
     Command pullIntake = this.runEnd(this::moveExpansionUp, this.expansionMotor::stopMotor).withTimeout(0.3);
-    Command waitCommand = Commands.waitSeconds(0.3);
+    Command waitCommand = Commands.waitSeconds(0.5);
     Command dropIntake = this.runEnd(this::moveExpansionDown, this.expansionMotor::stopMotor).withTimeout(0.25);
     Command autoDrop = Commands.sequence(
         this.runOnce(() -> {
