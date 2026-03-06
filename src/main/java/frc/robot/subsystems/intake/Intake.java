@@ -92,7 +92,7 @@ public class Intake extends SubsystemBase {
   }
 
   public double getEncoderRadians() {
-    return expansionCoder.getAbsolutePosition().getValue().in(Units.Radians);
+    return expansionCoder.getAbsolutePosition().getValueAsDouble();
   }
 
   private void moveExpansionUp() {
