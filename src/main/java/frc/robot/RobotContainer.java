@@ -206,6 +206,8 @@ public class RobotContainer {
     // left bumper pushes indexer to feed balls into flywheel
     c_driveStick.rightBumper().whileTrue(shooter.feedBalls());
 
+    c_driveStick.a().whileTrue(intake.lowerExpansion());
+
     // right trigger runs the intake
     c_driveStick.leftBumper().whileTrue(intake.intakeCommand);
 

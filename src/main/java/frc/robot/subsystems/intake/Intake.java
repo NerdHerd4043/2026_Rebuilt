@@ -125,9 +125,8 @@ public class Intake extends SubsystemBase {
 
   public Command intakeCommand = Commands.runEnd(() -> {
     this.intake();
-    this.lowerExpansion();
   }, () -> {
-    stopIntake();
+    this.stopIntake();
   });
 
   // ticking function
