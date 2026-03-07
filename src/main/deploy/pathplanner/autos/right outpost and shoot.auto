@@ -13,12 +13,6 @@
         {
           "type": "named",
           "data": {
-            "name": "NoDrive"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "AutoDropIntake"
           }
         },
