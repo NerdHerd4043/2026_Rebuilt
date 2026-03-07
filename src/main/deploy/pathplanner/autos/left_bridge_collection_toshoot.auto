@@ -9,6 +9,12 @@
           "data": {
             "pathName": "left_bridge_collection_toshoot"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "NoDrive"
+          }
         }
       ]
     }
