@@ -210,6 +210,7 @@ public class RobotContainer {
 
     c_driveStick.b().whileTrue(intake.reveseIntakeCommand());
     c_driveStick.b().whileFalse(intake.stopReversingIntake());
+    c_driveStick.b().whileTrue(shooter.reverseIndexer());
 
     // right trigger runs the intake
     c_driveStick.leftBumper().whileTrue(intake.intakeCommand);
