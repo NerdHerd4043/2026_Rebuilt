@@ -39,6 +39,12 @@
       "command": null
     },
     {
+      "name": "AutoDropIntake",
+      "waypointRelativePos": 0.44251336898395793,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
       "name": "feed",
       "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
