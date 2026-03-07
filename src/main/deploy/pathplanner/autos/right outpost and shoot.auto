@@ -29,12 +29,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "shoot"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "outpost_to_shoot"
@@ -43,7 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "feed"
+            "name": "ShootOneBall"
           }
         }
       ]
