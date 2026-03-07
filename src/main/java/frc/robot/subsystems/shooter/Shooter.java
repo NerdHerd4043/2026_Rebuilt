@@ -104,8 +104,10 @@ public class Shooter extends SubsystemBase {
   }
 
   public Command disrupter() {
-    return run(() -> {
+    return runEnd(() -> {
       disrupterMotor.set(ShooterConstants.disrupterSpeed);
+    }, () -> {
+      disrupterMotor.stopMotor();
     });
   }
 
