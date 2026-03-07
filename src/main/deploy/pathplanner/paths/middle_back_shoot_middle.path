@@ -33,20 +33,14 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "shoot",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "AutoDropIntake",
       "waypointRelativePos": 0.44251336898395793,
       "endWaypointRelativePos": null,
       "command": null
     },
     {
-      "name": "feed",
-      "waypointRelativePos": 1.0,
+      "name": "ShootOneBall",
+      "waypointRelativePos": 0.6457219251336906,
       "endWaypointRelativePos": null,
       "command": null
     }

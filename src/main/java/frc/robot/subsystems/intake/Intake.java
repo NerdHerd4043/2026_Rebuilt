@@ -26,6 +26,9 @@ public class Intake extends SubsystemBase {
     REST, EXTENDED
   };
 
+  private boolean revesingIntake = false;
+  private boolean intaking = false;
+
   private ExpansionPositions expansionPosition = ExpansionPositions.REST;
 
   // init CANcoder for expansion motor
@@ -52,14 +55,36 @@ public class Intake extends SubsystemBase {
 
   public void intake() {
     intakeMotor.set(IntakeConstants.intakeSpeed);
+    intaking = true;
   }
 
   public void reveseIntake() {
     intakeMotor.set(-IntakeConstants.intakeSpeed);
+    revesingIntake = true;
+  }
+
+  public Command reveseIntakeCommand() {
+    return this.run(() -> {
+      reveseIntake();
+    });
+  }
+
+  public Command stopReversingIntake() {
+    return run(() -> {
+      revesingIntake = false;
+    });
+  }
+
+  public Command stopIntaking() {
+    return run(() -> {
+      intaking = false;
+    });
   }
 
   public void stopIntake() {
-    intakeMotor.stopMotor();
+    if (!revesingIntake && !intaking) {
+      intakeMotor.stopMotor();
+    }
   }
 
   public void stopExpansion() {
@@ -123,10 +148,9 @@ public class Intake extends SubsystemBase {
     });
   }
 
-  public Command intakeCommand = Commands.runEnd(() -> {
+  public Command intakeCommand = Commands.run(() -> {
     this.intake();
-  }, () -> {
-    this.stopIntake();
+
   });
 
   // ticking function

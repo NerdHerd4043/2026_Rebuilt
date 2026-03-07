@@ -208,8 +208,12 @@ public class RobotContainer {
 
     c_driveStick.a().whileTrue(intake.lowerExpansion());
 
+    c_driveStick.b().whileTrue(intake.reveseIntakeCommand());
+    c_driveStick.b().whileFalse(intake.stopReversingIntake());
+
     // right trigger runs the intake
     c_driveStick.leftBumper().whileTrue(intake.intakeCommand);
+    c_driveStick.leftBumper().whileFalse(intake.stopIntaking());
 
     c_driveStick.povUp().onTrue(Commands.runOnce(gyro::reset));
 
