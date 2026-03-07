@@ -103,6 +103,12 @@ public class Shooter extends SubsystemBase {
     });
   }
 
+  public Command disrupter() {
+    return run(() -> {
+      disrupterMotor.set(ShooterConstants.disrupterSpeed);
+    });
+  }
+
   public Command feedBalls(double speed) {
     return this.runEnd(() -> {
       indexerMotor.set(ShooterConstants.indexerFeedSpeed);
