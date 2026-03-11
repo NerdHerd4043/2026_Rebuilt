@@ -223,4 +223,12 @@ public class RobotContainer {
     // return drivebase.getAlignCommand();
     return autoChooser.getSelected();
   }
+
+  public void setIntakePosToRest() {
+    intake.setIntakePosToRest();
+  }
+
+  public void stopFlyWheel() {
+    shooter.stopFlywheel().schedule();
+  }
 }
