@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.Drive;
+import frc.robot.commands.NoDrive;
 import frc.robot.subsystems.drivebase.Drivebase;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Shooter;
@@ -69,7 +70,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("RunIntake", intake.intakeCommand);
     NamedCommands.registerCommand("Feed", shooter.Feed);
     NamedCommands.registerCommand("Shoot", shooter.Shoot);
-    // NamedCommands.registerCommand("ShootAndFeed", shooter.ShootAndFeed());
+    NamedCommands.registerCommand("No Drive", new NoDrive(drivebase));
 
     configureNamedCommands();
     autoChooser = AutoBuilder.buildAutoChooser();
