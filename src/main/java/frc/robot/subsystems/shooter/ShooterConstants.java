@@ -13,9 +13,9 @@ public class ShooterConstants {
   public static final double disrupterSpeed = 0.15;
 
   public static final class FlyWheelPID {
-    public static final double p = 0.0035;
+    public static final double p = 0.00035;
     public static final double i = 0;
-    public static final double d = 1.0;
+    public static final double d = 0.01;
 
     public static final double maxOutput = 1;
     public static final double minOutput = -1;
