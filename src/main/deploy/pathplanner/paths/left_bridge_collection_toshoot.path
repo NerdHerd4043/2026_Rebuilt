@@ -176,7 +176,6 @@
         "nominalVoltage": 12.0,
         "unlimited": false
       }
-<<<<<<< HEAD
     },
     {
       "name": "Constraints Zone",
@@ -190,19 +189,13 @@
         "nominalVoltage": 12.0,
         "unlimited": false
       }
-=======
->>>>>>> 0a19f85 (auto and indexer fixes)
     }
   ],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "AutoDropIntake",
-<<<<<<< HEAD
-      "waypointRelativePos": 0.0,
-=======
       "waypointRelativePos": 0.1,
->>>>>>> 0a19f85 (auto and indexer fixes)
       "endWaypointRelativePos": null,
       "command": {
         "type": "parallel",
@@ -220,17 +213,6 @@
     },
     {
       "name": "RunIntake",
-<<<<<<< HEAD
-      "waypointRelativePos": 1.629979743416584,
-      "endWaypointRelativePos": 2.9999999999999947,
-      "command": null
-    },
-    {
-      "name": "ShootOneBall",
-      "waypointRelativePos": 5.95187165775401,
-      "endWaypointRelativePos": null,
-      "command": null
-=======
       "waypointRelativePos": 2.798109385550303,
       "endWaypointRelativePos": 5.099257258609044,
       "command": {
@@ -246,7 +228,6 @@
           ]
         }
       }
->>>>>>> 0a19f85 (auto and indexer fixes)
     }
   ],
   "globalConstraints": {
