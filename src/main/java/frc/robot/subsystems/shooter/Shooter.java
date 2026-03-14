@@ -77,6 +77,14 @@ public class Shooter extends SubsystemBase {
     });
   }
 
+  public Command dirupter() {
+    return this.runEnd(() -> {
+      disrupterMotor.set(ShooterConstants.disrupterSpeed);
+    }, () -> {
+      disrupterMotor.stopMotor();
+    });
+  }
+
   public Command shootOneBall() {
 
     Command runFlywheel = this.flywheelSlow();

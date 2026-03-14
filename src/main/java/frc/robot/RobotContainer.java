@@ -200,6 +200,7 @@ public class RobotContainer {
 
     // right trigger runs the intake
     c_driveStick.leftBumper().whileTrue(intake.intakeCommand);
+    c_driveStick.leftBumper().whileTrue(intake.intakeCommand);
 
     c_driveStick.b().whileTrue(intake.reverseIntakeCommand);
 
