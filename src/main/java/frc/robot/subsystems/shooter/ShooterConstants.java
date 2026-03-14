@@ -13,8 +13,8 @@ public class ShooterConstants {
 
   public static final class FlyWheelPID {
     public static final double p = 0.0001;
-    public static final double i = 0.00000001;
-    public static final double d = 0.00000005;
+    public static final double i = 0.0;
+    public static final double d = 0.0;
 
     public static final double maxOutput = 1;
     public static final double minOutput = -1;
