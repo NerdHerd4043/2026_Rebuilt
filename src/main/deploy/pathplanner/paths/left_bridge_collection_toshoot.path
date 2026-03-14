@@ -96,12 +96,12 @@
     },
     {
       "anchor": {
-        "x": 1.9745438282647583,
-        "y": 4.026887298747764
+        "x": 1.9416136363636358,
+        "y": 4.179295454545454
       },
       "prevControl": {
-        "x": 2.0652954545454545,
-        "y": 4.282363636363637
+        "x": 2.032365262644332,
+        "y": 4.434771792161327
       },
       "nextControl": null,
       "isLocked": false,
@@ -179,14 +179,20 @@
   "eventMarkers": [
     {
       "name": "AutoDropIntake",
-      "waypointRelativePos": 0.05,
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": null
     },
     {
       "name": "RunIntake",
       "waypointRelativePos": 1.629979743416584,
-      "endWaypointRelativePos": 5.099257258609044,
+      "endWaypointRelativePos": 2.9999999999999947,
+      "command": null
+    },
+    {
+      "name": "ShootOneBall",
+      "waypointRelativePos": 5.95187165775401,
+      "endWaypointRelativePos": null,
       "command": null
     }
   ],
