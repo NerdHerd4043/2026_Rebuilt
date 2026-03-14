@@ -11,6 +11,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.ctre.phoenix6.hardware.CANcoder;
 
 import edu.wpi.first.units.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -155,5 +156,8 @@ public class Intake extends SubsystemBase {
     // break;
     // default:
     // }
+
+    SmartDashboard.putNumber("Intake expansion encoder (degrees)", getEncoder());
+    SmartDashboard.putNumber("Intake expansion encoder (radians)", getEncoderRadians());
   }
 }

@@ -71,6 +71,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Feed", shooter.Feed);
     NamedCommands.registerCommand("Shoot", shooter.Shoot);
     NamedCommands.registerCommand("No Drive", new NoDrive(drivebase));
+    NamedCommands.registerCommand("Intake up for shooting", intake.raiseExpansion());
 
     configureNamedCommands();
     autoChooser = AutoBuilder.buildAutoChooser();
