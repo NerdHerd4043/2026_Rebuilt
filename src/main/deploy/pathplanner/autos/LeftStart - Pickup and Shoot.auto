@@ -9,15 +9,12 @@
           "data": {
             "pathName": "left_bridge_collection_toshoot"
           }
-<<<<<<< HEAD
-=======
         },
         {
           "type": "named",
           "data": {
             "name": "ShootOneBall"
           }
->>>>>>> 0a19f85 (auto and indexer fixes)
         }
       ]
     }
