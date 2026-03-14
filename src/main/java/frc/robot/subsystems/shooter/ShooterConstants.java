@@ -22,7 +22,7 @@ public class ShooterConstants {
 
   public static final class FlyWheelFF {
     public static final double s = 0.0;
-    public static final double v = 0.00185;
+    public static final double v = 0.001825;
   }
 
 }
