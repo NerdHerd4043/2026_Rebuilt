@@ -67,11 +67,6 @@ public class Shooter extends SubsystemBase {
     });
   }
 
-  // Possibly unused
-  public Command flywheelFast() {
-    return this.spinUpFlywheel(ShooterConstants.highSetPoint);
-  }
-
   public Command flywheelSlow() {
     return this.spinUpFlywheel(ShooterConstants.lowSetPoint);
   }
