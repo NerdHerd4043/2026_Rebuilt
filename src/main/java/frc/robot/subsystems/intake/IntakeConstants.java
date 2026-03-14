@@ -6,14 +6,14 @@ public class IntakeConstants {
   public static final int expansionMotorID = 34;
   public static final int expansionEncoderID = 40;
 
-  public static final double intakeSpeed = 0.70;
+  public static final double intakeSpeed = 0.50;
 
   public static final double expansionSpeed = 0.3;
 
   // TODO: remeasure intakePos
-  public static final double intakePos = 0.28;
+  public static final double intakePos = 1.8;
   // TODO: measure shootPos
-  public static final double shootPos = 0.16;
+  public static final double shootPos = 0.98;
   public static final double restPos = 0;
 
   public static final class ExpansionPID {
