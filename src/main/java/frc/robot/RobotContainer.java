@@ -72,7 +72,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Shoot", shooter.Shoot);
     NamedCommands.registerCommand("No Drive", new NoDrive(drivebase));
     NamedCommands.registerCommand("Intake up for shooting", intake.raiseExpansion());
-    NamedCommands.registerCommand("IntakeUpHalfSecond", intake.raiseExpansionForHalfSecond());
+    NamedCommands.registerCommand("IntakeUpForHalfSecond", intake.raiseExpansionForHalfSecond());
 
 
     configureNamedCommands();
