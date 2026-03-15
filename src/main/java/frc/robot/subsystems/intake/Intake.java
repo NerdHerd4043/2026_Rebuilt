@@ -111,6 +111,21 @@ public class Intake extends SubsystemBase {
     });
   }
 
+
+ public Command raiseExpansionForHalfSecond() {
+    return this.runEnd(() -> {
+      if (this.getEncoderRadians() > IntakeConstants.shootPos) {
+        this.moveExpansionUp();
+      }
+      // this.intake();
+    }, () -> {
+      this.stopMotors();
+    }).withTimeout(0.5);
+  }
+
+
+
+  
   public Command lowerExpansion() {
     return this.runEnd(() -> {
       if (this.getEncoderRadians() < IntakeConstants.intakePos) {

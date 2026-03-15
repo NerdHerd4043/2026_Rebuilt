@@ -29,15 +29,53 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Intake up for shooting"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootOneBall"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOneBall"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeUpForHalfSecond"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.5
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeUpForHalfSecond"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.5
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeUpForHalfSecond"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         }
       ]
