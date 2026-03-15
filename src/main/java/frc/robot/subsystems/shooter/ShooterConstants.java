@@ -7,7 +7,8 @@ public class ShooterConstants {
   public static final int disrupterMotorID = 35;
   public static final double flyWheelMaxSpeed = 1.0;
   public static final double indexerFeedSpeed = 0.6;
-  public static final double lowSetPoint = 3600;
+  // public static final double lowSetPoint = 3600;
+  public static final double lowSetPoint = 500;
 
   public static final double disrupterSpeed = 0.55;
 
