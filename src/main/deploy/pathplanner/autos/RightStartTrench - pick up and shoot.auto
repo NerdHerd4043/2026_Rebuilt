@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "AutoDropIntake"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "New New New Path"
@@ -19,13 +13,31 @@
         {
           "type": "named",
           "data": {
-            "name": "RunIntake"
+            "name": "AutoDropIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "New New New New New New Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "startIntakeCommand"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "New New Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopIntakeCommand"
           }
         },
         {

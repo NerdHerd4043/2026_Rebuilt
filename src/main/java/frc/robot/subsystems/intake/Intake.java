@@ -131,6 +131,8 @@ public class Intake extends SubsystemBase {
   }
 
   public Command intakeCommand = Commands.runEnd(() -> intake(), () -> stopIntake());
+  public Command startIntakeCommand = Commands.runOnce(() -> intake());
+  public Command stopIntakeCommand = Commands.runOnce(() -> stopIntake());
   public Command reverseIntakeCommand = Commands.runEnd(() -> reveseIntake(), () -> stopIntake());
 
   // ticking function
