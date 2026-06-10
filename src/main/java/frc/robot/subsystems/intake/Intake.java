@@ -16,11 +16,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.math.controller.PIDController;
 
 @Logged
 public class Intake extends SubsystemBase {
   private SparkMax intakeMotor = new SparkMax(IntakeConstants.intakeMotorID, MotorType.kBrushless);
   private SparkFlex expansionMotor = new SparkFlex(IntakeConstants.expansionMotorID, MotorType.kBrushless);
+
+
 
   public enum ExpansionPositions {
     REST, EXTENDED
@@ -35,12 +38,23 @@ public class Intake extends SubsystemBase {
     final SparkMaxConfig intakeMotorConfig = new SparkMaxConfig();
     final SparkFlexConfig expansionMotorConfig = new SparkFlexConfig();
 
+    //set PID stuff for expansion motor
+    expansionMotorConfig.closedLoop
+    .p(IntakeConstants.ExpansionPID.p)
+    .i(IntakeConstants.ExpansionPID.i)
+    .d(IntakeConstants.ExpansionPID.d)
+    .feedForward.kV(IntakeConstants.ExpansionPID.ff);
+
+
     intakeMotorConfig.idleMode(IdleMode.kBrake);
     expansionMotorConfig.idleMode(IdleMode.kBrake);
 
     intakeMotorConfig.inverted(true);
     expansionMotorConfig.inverted(false);
 
+
+
+    //configure after creating settings
     intakeMotor.configure(intakeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     expansionMotor.configure(expansionMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 

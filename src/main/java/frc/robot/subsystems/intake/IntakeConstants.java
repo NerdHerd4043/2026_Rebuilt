@@ -16,10 +16,12 @@ public class IntakeConstants {
   public static final double shootPos = 0.98;
   public static final double restPos = 0;
 
+  //TODO: Tune the Expansion PID!!!
   public static final class ExpansionPID {
-    public static final double p = 0;
+    public static final double p = 0.005;
     public static final double i = 0;
-    public static final double d = 0;
+    public static final double d = 0.0001;
+    public static final double ff = 0.00002;
 
     public static final double maxOutput = 1;
     public static final double minOutput = -1;
