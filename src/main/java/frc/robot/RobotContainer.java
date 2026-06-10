@@ -72,6 +72,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Shoot", shooter.Shoot);
     NamedCommands.registerCommand("No Drive", new NoDrive(drivebase));
     NamedCommands.registerCommand("Intake up for shooting", intake.raiseExpansion());
+    NamedCommands.registerCommand("IntakeUpForHalfSecond", intake.raiseExpansionForHalfSecond());
+
 
     configureNamedCommands();
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -200,12 +202,15 @@ public class RobotContainer {
 
     // right trigger runs the intake
     c_driveStick.leftBumper().whileTrue(intake.intakeCommand);
+    c_driveStick.leftBumper().whileTrue(shooter.dirupter());
+
+    c_driveStick.b().whileTrue(intake.reverseIntakeCommand);
+
+    c_driveStick.a().whileTrue(intake.lowerExpansion());
 
     c_driveStick.povUp().onTrue(Commands.runOnce(gyro::reset));
 
     c_driveStick.povDown().onTrue(intake.autoDropIntake());
-
-    c_driveStick.povLeft().onTrue(intake.autoDropIntake());
   }
 
   private void configureNamedCommands() {

@@ -67,11 +67,6 @@ public class Shooter extends SubsystemBase {
     });
   }
 
-  // Possibly unused
-  public Command flywheelFast() {
-    return this.spinUpFlywheel(ShooterConstants.highSetPoint);
-  }
-
   public Command flywheelSlow() {
     return this.spinUpFlywheel(ShooterConstants.lowSetPoint);
   }
@@ -79,6 +74,14 @@ public class Shooter extends SubsystemBase {
   public Command stopFlywheel() {
     return this.runOnce(() -> {
       this.pidController.setSetpoint(0, ControlType.kVoltage);
+    });
+  }
+
+  public Command dirupter() {
+    return this.runEnd(() -> {
+      disrupterMotor.set(ShooterConstants.disrupterSpeed);
+    }, () -> {
+      disrupterMotor.stopMotor();
     });
   }
 

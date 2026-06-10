@@ -80,10 +80,7 @@ public class Intake extends SubsystemBase {
         waitCommand,
         dropIntake);
 
-    return Commands.either(
-        autoDrop,
-        Commands.none(),
-        () -> this.expansionPosition != ExpansionPositions.EXTENDED);
+    return autoDrop;
   }
 
   // expansion CANCoder functions
@@ -114,6 +111,21 @@ public class Intake extends SubsystemBase {
     });
   }
 
+
+ public Command raiseExpansionForHalfSecond() {
+    return this.runEnd(() -> {
+      if (this.getEncoderRadians() > IntakeConstants.shootPos) {
+        this.moveExpansionUp();
+      }
+      // this.intake();
+    }, () -> {
+      this.stopMotors();
+    }).withTimeout(0.5);
+  }
+
+
+
+  
   public Command lowerExpansion() {
     return this.runEnd(() -> {
       if (this.getEncoderRadians() < IntakeConstants.intakePos) {
@@ -131,6 +143,9 @@ public class Intake extends SubsystemBase {
   }
 
   public Command intakeCommand = Commands.runEnd(() -> intake(), () -> stopIntake());
+  public Command startIntakeCommand = Commands.runOnce(() -> intake());
+  public Command stopIntakeCommand = Commands.runOnce(() -> stopIntake());
+  public Command reverseIntakeCommand = Commands.runEnd(() -> reveseIntake(), () -> stopIntake());
 
   // ticking function
   @Override
